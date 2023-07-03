@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'FranklinGothicBookC';
+    src: url('../fonts/FranklinGothicBookC.woff2') format('woff2'),
+        url('../fonts/FranklinGothicBookC.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FranklinGothicDemiC';
+    src: url('../fonts/FranklinGothicDemiC.woff2') format('woff2'),
+        url('../fonts/FranklinGothicDemiC.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circe';
+    src: url('../fonts/Circe-Bold.woff2') format('woff2'),
+        url('../fonts/Circe-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}

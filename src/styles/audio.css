@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+html, body {
+    /*   height: 100%;*/
+}
+
+body {
+    /*   display: flex;
+      flex-direction: column;*/
+}
+
+.wrap {
+    /*  flex: 1 0 auto;*/
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.footer-wrap {
+    flex-shrink: 0;
+}
+
+/*
+.wrap {min-height: 100%;
+   height: auto !important;
+   height: 100%;}
+
+   .footer-wrap {
+  position: absolute;
+   bottom: 0;
+   width: 100%;
+height: 250px;
+   margin-top: -250px;
+}
+*/
+
+.main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center;}
+.vertikal { /* margin: auto;min-height: 650px;min-height: 100%;*/
+}
+
+.main-content-wrap {
+    margin: auto; /*  min-height: 100%;min-height: 180px;height: auto !important;display: flex;flex-direction: column;*/
+}
+
+.head-content {
+    text-align: center;
+    margin-top: 50px;
+    height: 130px;
+    vertical-align: bottom;
+}
+
+.main-content__text {
+    margin-top: 0px;
+    margin-bottom: 0;
+    padding-right: 0;
+}
+
+.bottom-text {
+    height: 180px;
+    vertical-align: top;
+}
+
+.audio-head {
+    display: inline-block;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 30px;
+    /* or 94% */
+    color: #223E47;
+    width: 201.62px;
+    text-align: left;
+    margin-left: 10px;
+
+}
+
+
+.audio-icon {
+    display: inline-block;
+    content: url(../images/audio-icon.svg);
+    width: 58px;
+    height: 62px;
+
+}
+
+.main-content__text, .audio-text {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 22px;
+    text-align: center;
+    /* hanging-punctuation is currently only supported in Safari. */
+    hanging-punctuation: first last;
+    color: #000000;
+    margin: 0 auto 0 auto;
+}
+
+
+.audio-text2 {
+    margin-top: 25px;
+}
+
+.vopros-text {
+    line-height: 27px;
+    text-align: center;
+    color: #223E47;
+}
+
+.text-next {
+    background: rgba(239, 249, 255, 0.2);
+    border-radius: 23px;
+    padding: 50px;
+}
+
+.countdown, .countdown-red {
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 65px;
+    text-align: center;
+    /* hanging-punctuation is currently only supported in Safari. */
+    hanging-punctuation: first last;
+}
+
+/* button */
+.audio-button {
+
+    margin-top: 45px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 24px;
+
+    background: #FFFFFF;
+    border-radius: 8px;
+
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 44px;
+}
+
+.button-blue {
+    border: 2px solid #70B7DD;
+}
+
+.button-blue:active {
+    border: 2px solid #C12129;
+    cursor: pointer
+}
+
+.button-blue:hover {
+    border: 2px solid #C12129;
+    cursor: pointer
+}
+
+.button-red {
+    border: 2px solid #C12129;
+    border-radius: 60px;
+    padding: 20px 50px 20px 45px
+}
+
+.button-next {
+    border: 2px solid #C12129;
+    position: relative;
+}
+
+.button-next:after {
+    content: '';
+    position: absolute; /* Абсолютное позиционирование */
+    right: 10px;
+    bottom: 30px; /* Положение треугольника */
+    border: 10px solid transparent; /* Прозрачные границы */
+    border-left: 10px solid #C12129; /* Добавляем треугольник */
+}
+
+.button-end {
+    border: 0;
+    color: #C12129;
+    text-decoration: underline;
+}
+
+.countdown {
+    color: #223E47;
+    margin-top: 25px;
+}
+
+.countdown-red {
+    color: #C12129;
+    margin-top: 25px
+}
+
+
+.countdown-red::before {
+    content: url(../images/countdown-icon.svg);
+    width: 14px;
+    height: 14px;
+    position: relative;
+    left: -10px;
+    top: -8px;
+}
+
+.play-progress {
+    position: relative;
+    margin-top: 50px;
+    padding-left: 50px;
+}
+
+.play-btn {
+    position: absolute;
+    left: 0;
+    top: -8px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #D9D9D9;
+    position: relative;
+    color: #C5C6C8;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.progress-bar-inner {
+    height: 100%;
+    width: 0;
+    background-color: #70B7DD;
+    position: absolute;
+}
+
+.progress-bar-start {
+    position: absolute;
+    top: -20px;
+}
+
+.progress-bar-end {
+    position: absolute;
+    top: -20px;
+    right: 0;
+}
+
+.proverka {
+    font-style: italic;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 32px;
+    text-align: center;
+    color: #223E47;
+    margin-top: 20px;
+    height: 160px;
+}
+
+
+@media only screen and (min-width: 745px) {
+    .audio-text {
+        width: 600px;
+    }
+}
+
+@media only screen and (max-width: 744px) {
+    .audio-text {
+        width: 536px;
+    }
+}
+
+@media only screen and (max-width: 639px) and (min-width: 461px) {
+    .audio-text {
+        max-width: 567px;
+        min-width: 400px;
+        width: auto !important;
+        padding: 0 5% 0 5%;
+    }
+}
+
+@media only screen and (max-width: 460px) {
+    .audio-text {
+        min-width: 288px;
+        max-width: 400px;
+        width: auto !important;
+        padding: 0 5% 0 5%;
+    }
+
+    .audio-button {
+        font-size: 25px;
+    }
+}

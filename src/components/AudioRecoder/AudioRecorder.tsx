@@ -1,67 +1,64 @@
 import React, { memo, useEffect, useRef } from 'react';
+import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 
 interface AudioRecorderProps {
     className?: string;
+    getAudio: (audioFile: string) => void
 }
 
 export const AudioRecorder = memo((props: AudioRecorderProps) => {
     const {
         className = '',
+        getAudio,
     } = props;
 
-    // @ts-ignore
-    const mediaRecorder = useRef<ReturnType<MediaRecorder>>()
-
+    const mediaRecorder = useRef<MediaRecorder>()
     const handleStartRecording = () => {
-        mediaRecorder.current.start();
+        if (mediaRecorder.current) {
+            mediaRecorder.current.start();
+        }
     }
     const handleStopRecording = () => {
-        mediaRecorder.current.stop();
+        if (mediaRecorder.current) {
+            mediaRecorder.current.stop();
+        }
     }
 
     const voice = useRef([]);
 
+
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-            mediaRecorder.current = new MediaRecorder(stream);
+            mediaRecorder.current = new MediaRecorder(stream as MediaStream);
             mediaRecorder.current.addEventListener('dataavailable', function (event: BlobEvent) {
                 // @ts-ignore
                 voice.current.push(event.data);
-                console.log(event)
-            });
+            })
             mediaRecorder.current.addEventListener('stop', function () {
                 const blob = new Blob(voice.current, {
                     'type': 'audio/mp3',
                 });
-                const audioUrl = URL.createObjectURL(blob);
-                const audio = new Audio(audioUrl);
-                // @ts-ignore
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const analyser = audioContext.createAnalyser()
-                console.log(audioContext)
-                const source = audioContext.createMediaElementSource(audio);
+                const reader = new FileReader()
 
-                fetch(audioUrl)
-                    .then(response => response.arrayBuffer())
-                    .then(data => audioContext.decodeAudioData(data))
-                    .then(audioBuffer => {
-                        const dataArray = new Uint8Array(audioBuffer.length);
-                        const newArr = audioBuffer.sampleRate
-                        console.log(newArr)
-                    });
+                reader.readAsDataURL(blob)
+
+                reader.onload = () => {
+                    getAudio(String(reader.result))
+                }
             });
-        });
-    }, []);
-    return (
-        <div>
-            <button onClick={handleStartRecording}>
-                start record
-            </button>
+        }).catch((e) => {
+            console.error(e);
+        })
+    }, [ getAudio ]);
 
-            <button onClick={handleStopRecording}>
-                stop record
-            </button>
-        </div>
+
+    return (
+        <CountdownTimer
+            className={'countdown-red'}
+            time={3} isPlay={true}
+            onEnd={handleStopRecording}
+            onStart={handleStartRecording}
+        />
     );
 })
 

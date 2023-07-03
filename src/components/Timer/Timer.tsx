@@ -39,7 +39,7 @@ const Timer = memo((props: TimerProps) => {
             return
         }
 
-        playInterval.current = setInterval(() => {
+        playInterval.current = setTimeout(() => {
             onStep()
         }, timeStep)
 
@@ -47,7 +47,7 @@ const Timer = memo((props: TimerProps) => {
             onEnd?.()
         }
 
-        return () => clearInterval(playInterval.current)
+        return () => clearTimeout(playInterval.current)
 
     }, [ stopTimer, time, onEnd, isPlay, onStep, timeStep ]);
 

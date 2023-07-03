@@ -2,39 +2,50 @@ import React, { memo, useCallback, useState } from 'react';
 import Timer from '../Timer/Timer';
 import { ONE_SECOND_IN_MILLISECONDS } from '../../config/globalVal';
 
+
 interface CountdownTimerProps {
     className?: string;
+    time: number;
+    isPlay: boolean;
+    onEnd?: () => void
+    onStart?: () => void
 }
 
+/**
+ Время задается в секундах
+ */
 export const CountdownTimer = memo((props: CountdownTimerProps) => {
     const {
         className = '',
+        time,
+        isPlay = false,
+        onEnd,
+        onStart,
     } = props;
 
-    const [ play, setPlay ] = useState(false);
-    const [ currentTime, setCurrentTime ] = useState(120000); // значение в милисекундах
+    const [ play, setPlay ] = useState(isPlay);
+    const [ currentTime, setCurrentTime ] = useState(time * 1000); // значение в милисекундах
 
     const handlePlay = useCallback(() => {
+        onStart?.()
         setPlay(true)
-    }, []);
+    }, [ onStart ]);
 
     const handleStop = useCallback(() => {
         setPlay(false)
     }, []);
 
-
     const handleEnd = useCallback(() => {
         setPlay(false)
-        alert('Конец времени')
-    }, []);
+        onEnd?.()
+    }, [ onEnd ]);
 
     const handleStep = useCallback(() => {
         setCurrentTime(currentTime - ONE_SECOND_IN_MILLISECONDS)
     }, [ currentTime ]);
 
     return (
-        <div>
-            <button onClick={handlePlay}>start</button>
+        <div className={className}>
             <Timer
                 time={currentTime}
                 isPlay={play}
@@ -43,7 +54,6 @@ export const CountdownTimer = memo((props: CountdownTimerProps) => {
                 onStop={handleStop}
                 onEnd={handleEnd}
             />
-            <button onClick={handleStop}>stop</button>
         </div>
     );
 })
