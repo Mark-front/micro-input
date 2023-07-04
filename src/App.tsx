@@ -1,16 +1,15 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import './styles/App.module.css';
 import './styles/style.css';
 import './styles/media.css';
 import './styles/audio.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, useParams } from 'react-router-dom';
 import { MainPage } from './pages/MainPage/MainPage';
 import { MicCheck } from './pages/MicCheck/MicCheck';
 import { AudioRecorderPage } from './pages/AudioRecorderPage/AudioRecorderPage';
 import { PausePage } from './pages/PausePage/PausePage';
 import { AudioPage } from './pages/AudioPage';
 import { useGetTaskQuery } from './store/services/api';
-import { addQueryParams } from './lib/url/addQueryParams/addQueryParams';
 
 const router = createBrowserRouter([
     {
@@ -34,9 +33,13 @@ const router = createBrowserRouter([
         element: <AudioPage/>,
     },
 ]);
+export const ACTIVE_TASK = 'ACTIVE_TASK'
 
 function App() {
-    const { data, error, isLoading } = useGetTaskQuery('1');
+    // Пример ссылки http://localhost:3006?taskID=1
+    const { taskID } = useParams()
+    localStorage.setItem(ACTIVE_TASK, taskID ?? '')
+    const { data, error, isLoading } = useGetTaskQuery(taskID ?? '');
     let content: ReactNode;
     if (isLoading) {
         content = (
@@ -51,7 +54,6 @@ function App() {
         );
     } else {
         content = (<RouterProvider router={router}/>);
-        console.log(data)
     }
     return (
         <div className="main-container container">

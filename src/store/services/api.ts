@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Task } from '../types';
+import { Step, Task } from '../types';
 
 export const api = createApi({
     reducerPath: 'api',
@@ -11,6 +11,16 @@ export const api = createApi({
     endpoints: (builder) => ({
         getTask: builder.query<Task, string>({
             query: (id) => `tasks/${id}`,
+        }),
+        postAnswer: builder.mutation<Step, Partial<Step>>({
+            query: (data) => {
+                const { id, ...body } = data
+                return {
+                    url: `steps/${id}/answer`,
+                    method: 'PUT',
+                    body,
+                }
+            },
         }),
     }),
 })

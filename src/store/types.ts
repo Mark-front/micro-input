@@ -1,4 +1,4 @@
-export interface Task {
+export interface Step {
     'id': number,
     'pause': number,
     'question': {
@@ -7,6 +7,11 @@ export interface Task {
     },
     'time': number,
     'answer': null | string
+}
+
+export interface Task {
+    id: string,
+    stepsId: string
 }
 
 export type Tasks = Task[]

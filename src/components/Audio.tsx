@@ -1,5 +1,4 @@
 import React, { memo, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { useGetTaskQuery } from '../store/services/api';
 
 interface IAudioProps {
     className?: string;
@@ -17,10 +16,6 @@ export const Audio = memo((props: IAudioProps) => {
         console.log(e)
     }, [])
 
-    const handleLoad = useCallback((e: SyntheticEvent<HTMLAudioElement>) => {
-        console.log(e)
-    }, [])
-
     const audio = useRef<HTMLAudioElement>(null);
 
     const [ duration, setDuration ] = useState(0);
@@ -32,19 +27,21 @@ export const Audio = memo((props: IAudioProps) => {
     }, []);
 
     const timeUpdate = useCallback(() => {
-        console.log(audio.current?.currentTime, audio.current?.duration)
         setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
+        setDuration(Math.floor(audio.current?.duration ?? 0))
         setProgressPresent(currentTime / duration * 100)
     }, [ currentTime, duration ]);
 
     useEffect(() => {
         audio.current?.addEventListener('loadeddata', () => {
-            if (audio.current?.duration) {
+
+            if (audio.current?.duration && audio.current?.duration !== Infinity) {
                 setDuration(Math.floor(audio.current?.duration))
                 setCurrentTime(Math.floor(audio.current?.currentTime))
+                playAudio()
             }
         })
-    }, []);
+    }, [ playAudio ]);
 
     return (
         <>
@@ -69,11 +66,12 @@ export const Audio = memo((props: IAudioProps) => {
             </div>
             <audio
                 ref={audio}
-                autoPlay={true}
                 preload={'auto'}
                 onPlay={handlePlay}
                 onTimeUpdate={timeUpdate}
                 onEnded={timeUpdate}
+                onLoadedDataCapture={timeUpdate}
+                onLoadedMetadata={timeUpdate}
             >
                 <source
                     src={srcAudio} // test audio http://d2cstorage-a.akamaihd.net/wbr/gotnext/8578.mp3
