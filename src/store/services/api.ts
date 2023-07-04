@@ -1,0 +1,18 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { Task } from '../types';
+
+export const api = createApi({
+    reducerPath: 'api',
+    baseQuery: fetchBaseQuery(
+        {
+            baseUrl: 'http://localhost:3000/',
+        }
+    ),
+    endpoints: (builder) => ({
+        getTask: builder.query<Task, string>({
+            query: (name) => `tasks/${name}`,
+        }),
+    }),
+})
+
+export const { useGetTaskQuery } = api

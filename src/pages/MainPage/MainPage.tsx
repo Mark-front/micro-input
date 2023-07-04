@@ -15,6 +15,7 @@ export const MainPage = memo((props: IMainPageProps) => {
         microAvailable,
         setMicroAvailable,
     ] = useState(JSON.parse(localStorage.getItem('MICRO_AVAILABLE') ?? 'false'));
+
     const handleAudioDevice = () => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
             localStorage.setItem('MICRO_AVAILABLE', 'true')
@@ -26,9 +27,6 @@ export const MainPage = memo((props: IMainPageProps) => {
     }
 
     const navigate = useNavigate();
-
-    console.log(microAvailable)
-
 
     useEffect(() => {
         if (microAvailable) {

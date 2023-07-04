@@ -64,7 +64,7 @@ export const Audio = memo((props: IAudioProps) => {
                 onEnded={timeUpdate}
             >
                 <source
-                    src="http://d2cstorage-a.akamaihd.net/wbr/gotnext/8578.mp3"
+                    src={srcAudio} // test audio http://d2cstorage-a.akamaihd.net/wbr/gotnext/8578.mp3
                     type="audio/mp3"
                 />
             </audio>

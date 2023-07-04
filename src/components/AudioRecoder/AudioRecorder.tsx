@@ -14,11 +14,13 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
 
     const mediaRecorder = useRef<MediaRecorder>()
     const handleStartRecording = () => {
+        console.log(mediaRecorder.current)
         if (mediaRecorder.current) {
             mediaRecorder.current.start();
         }
     }
     const handleStopRecording = () => {
+        console.log(mediaRecorder.current)
         if (mediaRecorder.current) {
             mediaRecorder.current.stop();
         }
@@ -26,10 +28,10 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
 
     const voice = useRef([]);
 
-
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
             mediaRecorder.current = new MediaRecorder(stream as MediaStream);
+            handleStartRecording()
             mediaRecorder.current.addEventListener('dataavailable', function (event: BlobEvent) {
                 // @ts-ignore
                 voice.current.push(event.data);
@@ -39,10 +41,10 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                     'type': 'audio/mp3',
                 });
                 const reader = new FileReader()
-
                 reader.readAsDataURL(blob)
 
                 reader.onload = () => {
+                    console.log(String(reader.result))
                     getAudio(String(reader.result))
                 }
             });
@@ -51,14 +53,14 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
         })
     }, [ getAudio ]);
 
-
     return (
-        <CountdownTimer
-            className={'countdown-red'}
-            time={3} isPlay={true}
-            onEnd={handleStopRecording}
-            onStart={handleStartRecording}
-        />
+        <>
+            <CountdownTimer
+                className={'countdown-red'}
+                time={3} isPlay={true}
+                onEnd={handleStopRecording}
+            />
+        </>
     );
 })
 

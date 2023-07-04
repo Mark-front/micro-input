@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Clock } from './ui/Clock/Clock';
 import { ONE_SECOND_IN_MILLISECONDS } from '../../config/globalVal';
 
@@ -28,6 +28,7 @@ const Timer = memo((props: TimerProps) => {
 
     const playInterval = useRef<ReturnType<typeof setInterval>>()
 
+    const [ isStart, setIsStart ] = useState(false);
     const stopTimer = useCallback(() => {
         onStop?.()
         clearInterval(playInterval.current)
@@ -37,6 +38,11 @@ const Timer = memo((props: TimerProps) => {
         if (!isPlay) {
             stopTimer()
             return
+        }
+
+        if (!isStart) {
+            onPlay?.()
+            setIsStart(true)
         }
 
         playInterval.current = setTimeout(() => {
@@ -49,7 +55,7 @@ const Timer = memo((props: TimerProps) => {
 
         return () => clearTimeout(playInterval.current)
 
-    }, [ stopTimer, time, onEnd, isPlay, onStep, timeStep ]);
+    }, [ stopTimer, time, onEnd, isPlay, onStep, timeStep, isStart, onPlay ]);
 
     return (
         <Clock time={time}/>

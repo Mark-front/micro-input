@@ -17,7 +17,6 @@ const router = createBrowserRouter([
     },
     {
         path: '/pause',
-        // eslint-disable-next-line react/jsx-no-undef
         element: <PausePage/>,
     },
     {
