@@ -6,7 +6,6 @@ interface IMicCheckProps {
 }
 
 export const MicCheck = memo((props: IMicCheckProps) => {
-
     const navigate = useNavigate();
     return (
         <>

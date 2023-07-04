@@ -1,4 +1,5 @@
 import React, { memo, SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { useGetTaskQuery } from '../store/services/api';
 
 interface IAudioProps {
     className?: string;
@@ -10,6 +11,7 @@ export const Audio = memo((props: IAudioProps) => {
         className = '',
         srcAudio,
     } = props;
+
 
     const handlePlay = useCallback((e: SyntheticEvent<HTMLAudioElement>) => {
         console.log(e)
@@ -30,6 +32,7 @@ export const Audio = memo((props: IAudioProps) => {
     }, []);
 
     const timeUpdate = useCallback(() => {
+        console.log(audio.current?.currentTime, audio.current?.duration)
         setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
         setProgressPresent(currentTime / duration * 100)
     }, [ currentTime, duration ]);
@@ -47,8 +50,17 @@ export const Audio = memo((props: IAudioProps) => {
         <>
             <div className="audio-text">Текст соотв экрана</div>
             <div className="play-progress">
-                {/*Кнопка для запуска аудио нужна из-за https://developer.chrome.com/blog/autoplay/*/}
-                <button onClick={playAudio} className='play-btn'>Play</button>
+                {/* Кнопка для запуска аудио нужна из-за https://developer.chrome.com/blog/autoplay/ */}
+                <button onClick={playAudio} className='play-btn'>
+                    <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 210 210" xmlSpace="preserve"
+                    >
+                        <path d="M179.07,105L30.93,210V0L179.07,105z"/>
+                    </svg>
+                </button>
                 <div className="progress-bar">
                     <div className="progress-bar-start">{currentTime}</div>
                     <div className="progress-bar-end">{duration}</div>

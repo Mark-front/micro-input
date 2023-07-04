@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { api } from './services/api'
+import { audioSlice } from './slices/audioDataSlice';
 
 export const store = configureStore({
     reducer: {
         [api.reducerPath]: api.reducer,
+        audio: audioSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(api.middleware),

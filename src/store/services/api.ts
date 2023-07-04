@@ -10,7 +10,7 @@ export const api = createApi({
     ),
     endpoints: (builder) => ({
         getTask: builder.query<Task, string>({
-            query: (name) => `tasks/${name}`,
+            query: (id) => `tasks/${id}`,
         }),
     }),
 })
