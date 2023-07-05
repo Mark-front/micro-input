@@ -3,12 +3,14 @@ import React, { memo, SyntheticEvent, useCallback, useEffect, useRef, useState }
 interface IAudioProps {
     className?: string;
     srcAudio: string;
+    onEnded?: () => void
 }
 
 export const Audio = memo((props: IAudioProps) => {
     const {
         className = '',
         srcAudio,
+        onEnded,
     } = props;
 
 
@@ -72,6 +74,7 @@ export const Audio = memo((props: IAudioProps) => {
                 onEnded={timeUpdate}
                 onLoadedDataCapture={timeUpdate}
                 onLoadedMetadata={timeUpdate}
+                onEndedCapture={onEnded}
             >
                 <source
                     src={srcAudio} // test audio http://d2cstorage-a.akamaihd.net/wbr/gotnext/8578.mp3

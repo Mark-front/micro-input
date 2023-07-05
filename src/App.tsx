@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import './styles/App.module.css';
 import './styles/style.css';
 import './styles/media.css';
@@ -9,11 +9,13 @@ import { MicCheck } from './pages/MicCheck/MicCheck';
 import { AudioRecorderPage } from './pages/AudioRecorderPage/AudioRecorderPage';
 import { PausePage } from './pages/PausePage/PausePage';
 import { AudioPage } from './pages/AudioPage';
-import { useGetTaskQuery } from './store/services/api';
+import { useGetStepQuery, useGetTaskQuery } from './store/services/api';
+import { useSelector } from 'react-redux';
+import { RootState } from './store/store';
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/task/:id',
         element: <MainPage/>,
     },
     {
@@ -33,35 +35,32 @@ const router = createBrowserRouter([
         element: <AudioPage/>,
     },
 ]);
-export const ACTIVE_TASK = 'ACTIVE_TASK'
+export const ACTIVE_TASK = 'ACTIVE_TASK';
+export const ACTIVE_STEP = 'ACTIVE_STEP';
 
 function App() {
-    // Пример ссылки http://localhost:3006?taskID=1
-    const { taskID } = useParams()
-    localStorage.setItem(ACTIVE_TASK, taskID ?? '')
-    const { data, error, isLoading } = useGetTaskQuery(taskID ?? '');
-    let content: ReactNode;
-    if (isLoading) {
-        content = (
-            <div className="main-container container">
-                <div className="lds-ring">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-        );
-    } else {
-        content = (<RouterProvider router={router}/>);
-    }
+    const isCheck = useSelector((state: RootState) => state.audio.isCheck)
+    const currentStep = useSelector((state: RootState) => state.audio.currentStep);
+    const allStep = useSelector((state: RootState) => state.audio.allStep);
+
     return (
         <div className="main-container container">
             <div className="head-content">
                 <div className="audio-icon"></div>
                 <h1 className="audio-head">Онлайн тестирование</h1>
             </div>
-            {content}
+            <RouterProvider router={router}/>
+            <div className="bottom-text">
+                <div className="proverka">
+                    {
+                        !isCheck
+                            ?
+                            'Проверка оборудования'
+                            :
+                            `Задание ${currentStep} из ${allStep}`
+                    }
+                </div>
+            </div>
         </div>
     );
 }

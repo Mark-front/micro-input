@@ -17,7 +17,7 @@ export const MicCheck = memo((props: IMicCheckProps) => {
                         </div>
                         <button
                             className="audio-button button-blue"
-                            onClick={() => navigate('/recorder')}
+                            onClick={() => navigate('/pause')}
                         >
                             Проверка
                         </button>

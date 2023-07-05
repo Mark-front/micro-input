@@ -1,17 +1,24 @@
 export interface Step {
-    'id': number,
+    'id': string,
     'pause': number,
     'question': {
         'audio': null | string,
         'text': string | null
     },
-    'time': number,
+    'timeForAnswer': number,
     'answer': null | string
 }
 
 export interface Task {
     id: string,
     stepsId: string
+}
+
+export interface Answer {
+    id: string,
+    stepId: string,
+    taskId: string,
+    audio: string
 }
 
 export type Tasks = Task[]
