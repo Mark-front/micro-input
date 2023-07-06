@@ -11,11 +11,12 @@ export const TaskPage = memo((props: IMainPageProps) => {
     const {
         className = '',
     } = props;
+
     const navigate = useNavigate();
     const [
         microAvailable,
         setMicroAvailable,
-    ] = useState(JSON.parse(localStorage.getItem('MICRO_AVAILABLE') ?? 'false'));
+    ] = useState(false);
 
     const [
         error,

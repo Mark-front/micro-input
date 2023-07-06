@@ -45,13 +45,12 @@ function App() {
     const isCheck = useSelector((state: RootState) => state.audio.isCheck)
     const currentStep = useSelector((state: RootState) => state.audio.currentStep);
     const allStep = useSelector((state: RootState) => state.audio.allStep);
+    const task = useSelector((state: RootState) => state.audio.task);
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    let content: ReactNode = (
-        <RouterProvider router={router}/>
-    );
+    let content: ReactNode;
 
     if (isLoading) {
         content = (
@@ -66,15 +65,18 @@ function App() {
         );
     }
 
-    if (isError) {
+    if (isError && !task) {
         content = (<div className="main-container container">
             При загрузке данных произошла ошибка
         </div>);
     }
 
-    if (isSuccess) {
+    if (isSuccess || task) {
         dispatch(setTask(data))
         navigate('/task')
+        content = (
+            <RouterProvider router={router}/>
+        );
     }
 
     return (
