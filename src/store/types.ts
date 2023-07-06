@@ -11,14 +11,7 @@ export interface Step {
 
 export interface Task {
     id: string,
-    stepsId: string
-}
-
-export interface Answer {
-    id: string,
-    stepId: string,
-    taskId: string,
-    audio: string
+    steps: Step[]
 }
 
 export type Tasks = Task[]

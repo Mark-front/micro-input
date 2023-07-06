@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Audio } from '../components/Audio';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { ACTIVE_TASK } from '../App';
 import { handleEndedTask } from '../store/slices/audioDataSlice';
 
 interface IAudioPageProps {
@@ -17,7 +16,7 @@ export const AudioPage = memo((props: IAudioPageProps) => {
 
     const navigate = useNavigate();
     const audio = useSelector((state: RootState) => state.audio.value);
-    const taskNumber = localStorage.getItem(ACTIVE_TASK)
+    const taskNumber = useSelector((state: RootState) => state.audio.task?.id);
 
     const isEndedTask = useSelector(handleEndedTask)
     const onEnded = useCallback(() => {

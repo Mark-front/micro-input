@@ -1,22 +1,23 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import './styles/App.module.css';
 import './styles/style.css';
 import './styles/media.css';
 import './styles/audio.css';
-import { createBrowserRouter, RouterProvider, useParams } from 'react-router-dom';
-import { MainPage } from './pages/MainPage/MainPage';
+import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom';
 import { MicCheck } from './pages/MicCheck/MicCheck';
 import { AudioRecorderPage } from './pages/AudioRecorderPage/AudioRecorderPage';
 import { PausePage } from './pages/PausePage/PausePage';
 import { AudioPage } from './pages/AudioPage';
-import { useGetStepQuery, useGetTaskQuery } from './store/services/api';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
+import { useGetTaskQuery } from './store/services/api';
+import { TaskPage } from './pages/TaskPage/TaskPage';
+import { setTask } from './store/slices/audioDataSlice';
 
 const router = createBrowserRouter([
     {
-        path: '/task/:id',
-        element: <MainPage/>,
+        path: '/task',
+        element: <TaskPage/>,
     },
     {
         path: '/pause',
@@ -35,13 +36,46 @@ const router = createBrowserRouter([
         element: <AudioPage/>,
     },
 ]);
-export const ACTIVE_TASK = 'ACTIVE_TASK';
-export const ACTIVE_STEP = 'ACTIVE_STEP';
 
 function App() {
+    // пример http://localhost:3006/?taskID=task1
+    const id = new URLSearchParams(location.search).get('taskID')
+    const { data, isError, isLoading, isSuccess } = useGetTaskQuery(id);
+
     const isCheck = useSelector((state: RootState) => state.audio.isCheck)
     const currentStep = useSelector((state: RootState) => state.audio.currentStep);
     const allStep = useSelector((state: RootState) => state.audio.allStep);
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    let content: ReactNode = (
+        <RouterProvider router={router}/>
+    );
+
+    if (isLoading) {
+        content = (
+            <div className="main-container container">
+                <div className="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        );
+    }
+
+    if (isError) {
+        content = (<div className="main-container container">
+            При загрузке данных произошла ошибка
+        </div>);
+    }
+
+    if (isSuccess) {
+        dispatch(setTask(data))
+        navigate('/task')
+    }
 
     return (
         <div className="main-container container">
@@ -49,7 +83,7 @@ function App() {
                 <div className="audio-icon"></div>
                 <h1 className="audio-head">Онлайн тестирование</h1>
             </div>
-            <RouterProvider router={router}/>
+            {content}
             <div className="bottom-text">
                 <div className="proverka">
                     {

@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { Task } from '../types';
 
 export interface AudioState {
     value: string
     isCheck: boolean
     currentStep: number
     allStep: number
+    task?: Task
 }
 
 const initialState: AudioState = {
@@ -13,7 +14,7 @@ const initialState: AudioState = {
     isCheck: false,
     currentStep: 0,
     allStep: Infinity,
-
+    task: undefined,
 }
 
 export const audioSlice = createSlice({
@@ -26,12 +27,16 @@ export const audioSlice = createSlice({
         toggleCheck: (state) => {
             state.isCheck = !state.isCheck
         },
+        setTask: (state, action) => {
+            state.task = action.payload
+        },
     },
 
 })
 
 // Action creators are generated for each case reducer function
 export const { saveAudio } = audioSlice.actions
+export const { setTask } = audioSlice.actions
 
 export const handleEndedTask = (state: AudioState) => state.currentStep >= state.allStep
 

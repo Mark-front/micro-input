@@ -1,14 +1,11 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import { Step } from '../../store/types';
 
 interface AudioRecorderProps {
     className?: string;
     getAudio: (audioFile: string) => void
-    postAnswer: (audioFile: string) => void
     step?: Step
 }
 
@@ -16,7 +13,6 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
     const {
         className = '',
         getAudio,
-        postAnswer,
         step,
     } = props;
 
@@ -52,14 +48,13 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
 
                 reader.onload = () => {
                     getAudio(String(reader.result))
-                    postAnswer(String(reader.result))
                     navigate('/audio')
                 }
             });
         }).catch((e) => {
             console.error(e);
         })
-    }, [ getAudio, navigate, postAnswer ]);
+    }, [ getAudio, navigate ]);
 
     return (
         <>
