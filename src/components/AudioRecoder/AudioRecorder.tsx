@@ -2,6 +2,8 @@ import React, { memo, useEffect, useRef } from 'react';
 import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 import { useNavigate } from 'react-router-dom';
 import { Step } from '../../store/types';
+import { useSelector } from 'react-redux';
+import { getCurrentStep } from '../../store/slices/audioDataSlice';
 
 interface AudioRecorderProps {
     className?: string;
@@ -30,6 +32,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
 
     const voice = useRef([]);
     const navigate = useNavigate();
+    const currentStep = useSelector(getCurrentStep)
 
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -60,7 +63,8 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
         <>
             <CountdownTimer
                 className={'countdown-red'}
-                time={step?.timeForAnswer ?? 60} isPlay={true}
+                time={currentStep?.timeForAnswer ?? 60}
+                isPlay={true}
                 onEnd={handleStopRecording}
             />
         </>

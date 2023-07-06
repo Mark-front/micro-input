@@ -2,8 +2,8 @@ export interface Step {
     'id': string,
     'pause': number,
     'question': {
-        'audio': null | string,
-        'text': string | null
+        'audio': string,
+        'text': string
     },
     'timeForAnswer': number,
     'answer': null | string

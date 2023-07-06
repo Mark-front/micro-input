@@ -1,7 +1,8 @@
-import React, { memo, ReactNode, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
+import { handleEndedTask } from '../../store/slices/audioDataSlice';
 
 interface IMainPageProps {
     className?: string;
@@ -26,7 +27,7 @@ export const TaskPage = memo((props: IMainPageProps) => {
     const handleAudioDevice = () => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
             setMicroAvailable(true)
-            if (microAvailable && !isCheck) {
+            if (microAvailable && !isChecked) {
                 navigate('/mic-check')
             }
         }).catch((e) => {
@@ -35,10 +36,21 @@ export const TaskPage = memo((props: IMainPageProps) => {
         })
     }
 
-    const isCheck = useSelector((state: RootState) => state.audio.isCheck)
+    const isChecked = useSelector((state: RootState) => state.audio.isChecked)
+    const isEnded = useSelector(handleEndedTask)
 
-
-    const content: ReactNode = (<>
+    useEffect(() => {
+        if (microAvailable && !isChecked) {
+            navigate('/mic-check')
+        }
+        if (isEnded) {
+            navigate('/ended')
+        }
+        if (isChecked) {
+            navigate('/question')
+        }
+    }, [ isChecked, isEnded, microAvailable, navigate ]);
+    return (
         <div className="main-content-wrap">
             <div className="container vertikal">
                 <div className="main-content__text">
@@ -57,9 +69,7 @@ export const TaskPage = memo((props: IMainPageProps) => {
                 </div>
             </div>
         </div>
-    </>);
-
-    if (content) return content
+    );
 })
 
 

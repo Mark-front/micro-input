@@ -1,9 +1,9 @@
 import React, { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Audio } from '../components/Audio';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { handleEndedTask } from '../store/slices/audioDataSlice';
+import { getCurrentStepNumber, setCurrentStepNumber, toggleCheck } from '../store/slices/audioDataSlice';
 
 interface IAudioPageProps {
     className?: string;
@@ -16,16 +16,24 @@ export const AudioPage = memo((props: IAudioPageProps) => {
 
     const navigate = useNavigate();
     const audio = useSelector((state: RootState) => state.audio.value);
-    const taskNumber = useSelector((state: RootState) => state.audio.task?.id);
+    const number = useSelector(getCurrentStepNumber);
+    const isChecked = useSelector((state: RootState) => state.audio.isChecked)
 
-    const isEndedTask = useSelector(handleEndedTask)
+    const dispatch = useDispatch()
+
     const onEnded = useCallback(() => {
-        navigate(`/task/${taskNumber}`)
-    }, [ navigate, taskNumber ]);
+        if (!isChecked) {
+            dispatch(toggleCheck())
+            dispatch(setCurrentStepNumber())
+        }
+        navigate('/')
+    }, [ dispatch, isChecked, navigate ]);
+    
+
     return (
         <>
             <div className="main-content-wrap">
-                <Audio srcAudio={audio} onEnded={onEnded}/>
+                <Audio srcAudio={audio[number]} onEnded={onEnded}/>
             </div>
         </>
     );

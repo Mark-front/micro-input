@@ -7,6 +7,7 @@ interface IMicCheckProps {
 
 export const MicCheck = memo((props: IMicCheckProps) => {
     const navigate = useNavigate();
+
     return (
         <>
             <div className="main-content-wrap">
@@ -17,7 +18,7 @@ export const MicCheck = memo((props: IMicCheckProps) => {
                         </div>
                         <button
                             className="audio-button button-blue"
-                            onClick={() => navigate('/pause')}
+                            onClick={() => navigate('/question')}
                         >
                             Проверка
                         </button>

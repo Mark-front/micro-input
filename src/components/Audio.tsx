@@ -2,7 +2,7 @@ import React, { memo, SyntheticEvent, useCallback, useEffect, useRef, useState }
 
 interface IAudioProps {
     className?: string;
-    srcAudio: string;
+    srcAudio?: string;
     onEnded?: () => void
 }
 
@@ -47,7 +47,6 @@ export const Audio = memo((props: IAudioProps) => {
 
     return (
         <>
-            <div className="audio-text">Текст соотв экрана</div>
             <div className="play-progress">
                 {/* Кнопка для запуска аудио нужна из-за https://developer.chrome.com/blog/autoplay/ */}
                 <button onClick={playAudio} className='play-btn'>

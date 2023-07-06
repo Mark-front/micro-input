@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import './styles/App.module.css';
 import './styles/style.css';
 import './styles/media.css';
 import './styles/audio.css';
-import { createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MicCheck } from './pages/MicCheck/MicCheck';
 import { AudioRecorderPage } from './pages/AudioRecorderPage/AudioRecorderPage';
 import { PausePage } from './pages/PausePage/PausePage';
@@ -12,11 +12,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import { useGetTaskQuery } from './store/services/api';
 import { TaskPage } from './pages/TaskPage/TaskPage';
-import { setTask } from './store/slices/audioDataSlice';
+import { setCurrentStep, setTask } from './store/slices/audioDataSlice';
+import { QuestionPage } from './pages/QuestionPage';
+import { EndedPage } from './pages/EndedPage';
 
 const router = createBrowserRouter([
     {
-        path: '/task',
+        path: '/',
         element: <TaskPage/>,
     },
     {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
         path: '/audio',
         element: <AudioPage/>,
     },
+    {
+        path: '/question',
+        element: <QuestionPage/>,
+    },
+    {
+        path: '/ended',
+        element: <EndedPage/>,
+    },
 ]);
 
 function App() {
@@ -42,13 +52,11 @@ function App() {
     const id = new URLSearchParams(location.search).get('taskID')
     const { data, isError, isLoading, isSuccess } = useGetTaskQuery(id);
 
-    const isCheck = useSelector((state: RootState) => state.audio.isCheck)
-    const currentStep = useSelector((state: RootState) => state.audio.currentStep);
-    const allStep = useSelector((state: RootState) => state.audio.allStep);
+    const isChecked = useSelector((state: RootState) => state.audio.isChecked)
+    const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
     const task = useSelector((state: RootState) => state.audio.task);
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     let content: ReactNode;
 
@@ -72,13 +80,16 @@ function App() {
     }
 
     if (isSuccess || task) {
-        dispatch(setTask(data))
-        navigate('/task')
         content = (
             <RouterProvider router={router}/>
         );
     }
-
+    useEffect(() => {
+        if (isSuccess || task) {
+            dispatch(setTask(data))
+            dispatch(setCurrentStep(task?.steps[currentStepNumber]))
+        }
+    }, [ currentStepNumber, data, dispatch, isChecked, isSuccess, task ]);
     return (
         <div className="main-container container">
             <div className="head-content">
@@ -89,11 +100,11 @@ function App() {
             <div className="bottom-text">
                 <div className="proverka">
                     {
-                        !isCheck
+                        !isChecked
                             ?
                             'Проверка оборудования'
                             :
-                            `Задание ${currentStep} из ${allStep}`
+                            `Задание ${currentStepNumber + 1} из ${task?.steps.length}`
                     }
                 </div>
             </div>

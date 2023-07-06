@@ -686,6 +686,10 @@ a img {
     padding: 57px 94px 72px;
 }
 
+.center {
+    display: block;
+    margin: 0 auto;
+}
 
 .callback-head {
     color: #fff;
