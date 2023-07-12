@@ -22,7 +22,7 @@ const fetchRequest = async (props: IRequestProps) => {
 
     const res = await fetch('/local/ajax/', {
         method: 'post',
-        body: formData,
+        body: JSON.stringify(formData),
     })
         .then((response) => response.json())
         .catch((error) => {

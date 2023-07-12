@@ -5,12 +5,12 @@ export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery(
         {
-            baseUrl: 'http://localhost:3000/',
+            baseUrl: location.origin,
         }
     ),
     endpoints: (builder) => ({
-        getTask: builder.query<Task, string | undefined | null>({
-            query: (id) => `tasks/${id}`,
+        getTask: builder.query<{ tasks: Task[] }, string | undefined | null>({
+            query: (id) => '/db.json',
         }),
     }),
 })

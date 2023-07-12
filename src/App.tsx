@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import { useGetTaskQuery } from './store/services/api';
 import { TaskPage } from './pages/TaskPage/TaskPage';
-import { setCurrentStep, setTask } from './store/slices/audioDataSlice';
+import { setAllStepNumber, setCurrentStep, setTasks } from './store/slices/audioDataSlice';
 import { QuestionPage } from './pages/QuestionPage';
 import { EndedPage } from './pages/EndedPage';
 
@@ -48,13 +48,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-    // пример http://localhost:3006/?taskID=task1
-    const id = new URLSearchParams(location.search).get('taskID')
+    // пример http://localhost:3006/?taskID=1
+    const id: string = new URLSearchParams(location.search).get('taskID') || ''
     const { data, isError, isLoading, isSuccess } = useGetTaskQuery(id);
-
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
-    const task = useSelector((state: RootState) => state.audio.task);
+    const task = useSelector((state: RootState) => state.audio.tasks?.[Number(id)]);
+    const allStepNumber = useSelector((state: RootState) => state.audio.allStepNumber);
 
     const dispatch = useDispatch()
 
@@ -85,9 +85,11 @@ function App() {
         );
     }
     useEffect(() => {
-        if (isSuccess || task) {
-            dispatch(setTask(data))
+        console.log(isSuccess)
+        if (isSuccess) {
+            dispatch(setTasks(data!.tasks))
             dispatch(setCurrentStep(task?.steps[currentStepNumber]))
+            dispatch(setAllStepNumber((task?.steps.length ?? Infinity) - 1))
         }
     }, [ currentStepNumber, data, dispatch, isChecked, isSuccess, task ]);
     return (

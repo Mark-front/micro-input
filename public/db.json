@@ -1,0 +1,100 @@
+{
+  "tasks": [
+    {
+      "id": "task1",
+      "steps": [
+        {
+          "id": 1,
+          "pause": 5,
+          "question": {
+            "audio": "media/question.mp3",
+            "text": null
+          },
+          "timeForAnswer": 5
+        },
+        {
+          "id": 2,
+          "pause": 5,
+          "question": {
+            "audio": "media/question.mp3",
+            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?"
+          },
+          "timeForAnswer": 5
+        },
+        {
+          "id": 3,
+          "pause": 5,
+          "question": {
+            "audio": "media/question.mp3",
+            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?"
+          },
+          "timeForAnswer": 5
+        }
+      ]
+    },
+    {
+      "id": "task2",
+      "steps": [
+        {
+          "id": 1,
+          "pause": 5,
+          "question": {
+            "audio": "media/question.mp3",
+            "text": null
+          },
+          "timeForAnswer": 5
+        },
+        {
+          "id": 2,
+          "pause": 5,
+          "question": {
+            "audio": null,
+            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?"
+          },
+          "timeForAnswer": 5
+        },
+        {
+          "id": 3,
+          "pause": 5,
+          "question": {
+            "audio": null,
+            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?"
+          },
+          "timeForAnswer": 5
+        }
+      ]
+    },
+    {
+      "id": "task3",
+      "steps": [
+        {
+          "id": 1,
+          "pause": 5,
+          "question": {
+            "audio": "media/question.mp3",
+            "text": null
+          },
+          "timeForAnswer": 5
+        },
+        {
+          "id": 2,
+          "pause": 5,
+          "question": {
+            "audio": null,
+            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?"
+          },
+          "timeForAnswer": 5
+        },
+        {
+          "id": 3,
+          "pause": 5,
+          "question": {
+            "audio": null,
+            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?"
+          },
+          "timeForAnswer": 5
+        }
+      ]
+    }
+  ]
+}

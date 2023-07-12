@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Audio } from '../components/Audio';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { getCurrentStepNumber, setCurrentStepNumber, toggleCheck } from '../store/slices/audioDataSlice';
+import { deleteCheckAudio, getCurrentStepNumber, toggleCheck } from '../store/slices/audioDataSlice';
 
 interface IAudioPageProps {
     className?: string;
@@ -16,6 +16,7 @@ export const AudioPage = memo((props: IAudioPageProps) => {
 
     const navigate = useNavigate();
     const audio = useSelector((state: RootState) => state.audio.value);
+    console.log(audio)
     const number = useSelector(getCurrentStepNumber);
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
 
@@ -24,11 +25,11 @@ export const AudioPage = memo((props: IAudioPageProps) => {
     const onEnded = useCallback(() => {
         if (!isChecked) {
             dispatch(toggleCheck())
-            dispatch(setCurrentStepNumber())
+            dispatch(deleteCheckAudio())
         }
         navigate('/')
     }, [ dispatch, isChecked, navigate ]);
-    
+
 
     return (
         <>

@@ -2,8 +2,9 @@ import React, { memo, useEffect, useRef } from 'react';
 import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 import { useNavigate } from 'react-router-dom';
 import { Step } from '../../store/types';
-import { useSelector } from 'react-redux';
-import { getCurrentStep } from '../../store/slices/audioDataSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentStep, setCurrentStepNumber } from '../../store/slices/audioDataSlice';
+import { RootState } from '../../store/store';
 
 interface AudioRecorderProps {
     className?: string;
@@ -33,6 +34,11 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
     const voice = useRef([]);
     const navigate = useNavigate();
     const currentStep = useSelector(getCurrentStep)
+    const isChecked = useSelector((state: RootState) => state.audio.isChecked)
+    const dispatch = useDispatch()
+    const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
+    const allStepNumber = useSelector((state: RootState) => state.audio.allStepNumber);
+
 
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
@@ -51,13 +57,23 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
 
                 reader.onload = () => {
                     getAudio(String(reader.result))
-                    navigate('/audio')
+                    if (currentStepNumber >= allStepNumber) {
+                        navigate('/ended')
+                    } else {
+                        if (!isChecked) {
+                            navigate('/audio')
+                        } else {
+                            dispatch(setCurrentStepNumber())
+                            navigate('/question')
+                        }
+                    }
+
                 }
             });
         }).catch((e) => {
             console.error(e);
         })
-    }, [ getAudio, navigate ]);
+    }, [ allStepNumber, currentStepNumber, dispatch, getAudio, isChecked, navigate ]);
 
     return (
         <>

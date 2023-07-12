@@ -36,7 +36,10 @@ export const Audio = memo((props: IAudioProps) => {
 
     useEffect(() => {
         audio.current?.addEventListener('loadeddata', () => {
+            if (audio.current?.duration !== Infinity) {
 
+                console.log('inf')
+            }
             if (audio.current?.duration && audio.current?.duration !== Infinity) {
                 setDuration(Math.floor(audio.current?.duration))
                 setCurrentTime(Math.floor(audio.current?.currentTime))

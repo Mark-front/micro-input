@@ -21,25 +21,23 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     const text = useSelector((state: RootState) => state.audio.currentStep?.question.text)
 
     const onEnded = useCallback(() => {
-        navigate('/pause')
-    }, [ navigate ]);
+        console.log('end')
+    }, []);
 
     return (
         <div className="main-content-wrap">
             <div className="audio-text">{text ?? 'Вопрос:'}</div>
             {
-                (text && !audio) &&
-                <button
-                    className='audio-button button-blue center'
-                    onClick={() => navigate('/pause')}
-                >
-                    Ответить
-                </button>
-            }
-            {
                 (audio) &&
                 <Audio srcAudio={audio} onEnded={onEnded}/>
             }
+
+            <button
+                className='audio-button button-blue center'
+                onClick={() => navigate('/pause')}
+            >
+                Ответить
+            </button>
         </div>
     );
 });
