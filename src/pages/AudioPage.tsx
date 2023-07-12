@@ -1,9 +1,10 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Audio } from '../components/Audio';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { deleteCheckAudio, getCurrentStepNumber, toggleCheck } from '../store/slices/audioDataSlice';
+// eslint-disable-next-line max-len
+import { deleteCheckAudio, getCurrentStepNumber, setLocationCurrent, toggleCheck } from '../store/slices/audioDataSlice';
 
 interface IAudioPageProps {
     className?: string;
@@ -27,16 +28,26 @@ export const AudioPage = memo((props: IAudioPageProps) => {
             dispatch(toggleCheck())
             dispatch(deleteCheckAudio())
         }
+        dispatch(setLocationCurrent('/'))
         navigate('/')
     }, [ dispatch, isChecked, navigate ]);
 
 
+    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
+    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
+
+
+    console.log(locationCurrent, '/audio', 'locationCurrent')
+    useEffect(() => {
+        if (!String(location.href).includes(locationCurrent)) {
+            location.href = locationStart
+        }
+    }, [ locationCurrent, locationStart ]);
+
     return (
-        <>
-            <div className="main-content-wrap">
-                <Audio srcAudio={audio[number]} onEnded={onEnded}/>
-            </div>
-        </>
+        <div className="main-content-wrap">
+            <Audio srcAudio={audio[number]} onEnded={onEnded}/>
+        </div>
     );
 });
 

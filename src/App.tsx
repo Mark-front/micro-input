@@ -12,9 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
 import { useGetTaskQuery } from './store/services/api';
 import { TaskPage } from './pages/TaskPage/TaskPage';
-import { setAllStepNumber, setCurrentStep, setTasks } from './store/slices/audioDataSlice';
+import { setAllStepNumber, setCurrentStep, setLocationStart, setTasks } from './store/slices/audioDataSlice';
 import { QuestionPage } from './pages/QuestionPage';
 import { EndedPage } from './pages/EndedPage';
+import { createBrowserHistory } from 'history';
 
 const router = createBrowserRouter([
     {
@@ -54,12 +55,20 @@ function App() {
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
     const task = useSelector((state: RootState) => state.audio.tasks?.[Number(id)]);
-    const allStepNumber = useSelector((state: RootState) => state.audio.allStepNumber);
-
+    const isLoaded = useSelector((state: RootState) => state.audio.isLoadedPage);
+    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
     const dispatch = useDispatch()
 
-    let content: ReactNode;
+    const history = createBrowserHistory();
 
+    useEffect(() => {
+        if (String(location.href).includes('taskID')) {
+            sessionStorage.setItem('startHref', location.href)
+            dispatch(setLocationStart(location.href))
+        }
+    }, [ dispatch, history, id, isLoaded, locationStart ]);
+
+    let content: ReactNode;
     if (isLoading) {
         content = (
             <div className="main-container container">
@@ -71,21 +80,22 @@ function App() {
                 </div>
             </div>
         );
-    }
 
-    if (isError && !task) {
-        content = (<div className="main-container container">
-            При загрузке данных произошла ошибка
-        </div>);
     }
-
     if (isSuccess || task) {
         content = (
             <RouterProvider router={router}/>
         );
     }
+
+    if (isError) {
+        content = (<div className="main-container container">
+            При загрузке данных произошла ошибка
+        </div>);
+    }
+
+
     useEffect(() => {
-        console.log(isSuccess)
         if (isSuccess) {
             dispatch(setTasks(data!.tasks))
             dispatch(setCurrentStep(task?.steps[currentStepNumber]))

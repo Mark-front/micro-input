@@ -8,6 +8,11 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
+document.addEventListener('DOMContentLoaded', () => {
+    if (!String(location.href).includes('taskID')) {
+        location.href = sessionStorage.getItem('startHref') || ''
+    }
+})
 root.render(
     <React.StrictMode>
         <Provider store={store}>

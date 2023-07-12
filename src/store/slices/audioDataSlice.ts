@@ -9,6 +9,9 @@ export interface AudioState {
     allStepNumber: number
     tasks?: Task[]
     currentStep?: Step
+    isLoadedPage: boolean
+    locationStart: string
+    locationCurrent: string
 }
 
 const initialState: AudioState = {
@@ -18,6 +21,9 @@ const initialState: AudioState = {
     allStepNumber: Infinity,
     tasks: undefined,
     currentStep: undefined,
+    isLoadedPage: false,
+    locationStart: '/',
+    locationCurrent: '/',
 }
 
 export const audioSlice = createSlice({
@@ -49,6 +55,15 @@ export const audioSlice = createSlice({
         setCurrentStepNumber: state => {
             state.currentStepNumber += 1
         },
+        setIsLoadedPage: (state, action) => {
+            state.isLoadedPage = action.payload
+        },
+        setLocationStart: (state, action) => {
+            state.locationStart = action.payload
+        },
+        setLocationCurrent: (state, action) => {
+            state.locationCurrent = action.payload
+        },
     },
 })
 
@@ -60,6 +75,9 @@ export const { setCurrentStepNumber } = audioSlice.actions
 export const { setAllStepNumber } = audioSlice.actions
 export const { toggleCheck } = audioSlice.actions
 export const { deleteCheckAudio } = audioSlice.actions
+export const { setIsLoadedPage } = audioSlice.actions
+export const { setLocationStart } = audioSlice.actions
+export const { setLocationCurrent } = audioSlice.actions
 
 export const handleEndedTask = (state: RootState) => state.audio.currentStepNumber >= state.audio.allStepNumber
 export const getCurrentStep = (state: RootState) => state.audio.currentStep

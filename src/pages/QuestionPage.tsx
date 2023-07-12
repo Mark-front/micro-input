@@ -1,9 +1,9 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Audio } from '../components/Audio';
-import { useSelector } from 'react-redux';
-import { getCurrentStep } from '../store/slices/audioDataSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { setLocationCurrent } from '../store/slices/audioDataSlice';
 
 interface IQuestionPageProps {
     className?: string;
@@ -15,7 +15,7 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     } = props;
 
     const navigate = useNavigate();
-    const currentStep = useSelector(getCurrentStep)
+    const dispatch = useDispatch()
 
     const audio = useSelector((state: RootState) => state.audio.currentStep?.question.audio)
     const text = useSelector((state: RootState) => state.audio.currentStep?.question.text)
@@ -23,6 +23,17 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     const onEnded = useCallback(() => {
         console.log('end')
     }, []);
+
+    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
+    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
+
+
+    console.log(locationCurrent, '/question', 'locationCurrent')
+    useEffect(() => {
+        if (!String(location.href).includes(locationCurrent)) {
+            location.href = locationStart
+        }
+    }, [ locationCurrent, locationStart ]);
 
     return (
         <div className="main-content-wrap">
@@ -34,7 +45,10 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
 
             <button
                 className='audio-button button-blue center'
-                onClick={() => navigate('/pause')}
+                onClick={() => {
+                    dispatch(setLocationCurrent('/pause'))
+                    navigate('/pause')
+                }}
             >
                 Ответить
             </button>

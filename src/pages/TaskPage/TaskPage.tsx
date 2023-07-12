@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { useNavigate } from 'react-router-dom';
-import { handleEndedTask } from '../../store/slices/audioDataSlice';
+import { handleEndedTask, setLocationCurrent } from '../../store/slices/audioDataSlice';
 
 interface IMainPageProps {
     className?: string;
@@ -28,6 +28,7 @@ export const TaskPage = memo((props: IMainPageProps) => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
             setMicroAvailable(true)
             if (microAvailable && !isChecked) {
+                dispatch(setLocationCurrent('/mic-check'))
                 navigate('/mic-check')
             }
         }).catch((e) => {
@@ -35,21 +36,35 @@ export const TaskPage = memo((props: IMainPageProps) => {
             console.error(e);
         })
     }
+    const dispatch = useDispatch()
 
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const isEnded = useSelector(handleEndedTask)
 
     useEffect(() => {
         if (microAvailable && !isChecked) {
+            dispatch(setLocationCurrent('/mic-check'))
             navigate('/mic-check')
         }
         if (isEnded) {
+            dispatch(setLocationCurrent('/ended'))
             navigate('/ended')
         }
         if (isChecked) {
+            dispatch(setLocationCurrent('/question'))
             navigate('/question')
         }
-    }, [ isChecked, isEnded, microAvailable, navigate ]);
+    }, [ dispatch, isChecked, isEnded, microAvailable, navigate ]);
+
+    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
+    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
+
+
+    useEffect(() => {
+        if (!String(location.href).includes(locationCurrent)) {
+            location.href = locationStart
+        }
+    }, [ locationCurrent, locationStart ]);
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">

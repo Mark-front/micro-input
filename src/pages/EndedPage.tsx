@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 
@@ -42,6 +42,16 @@ export const EndedPage = memo(() => {
         })
     }
 
+    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
+    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
+
+
+    console.log(locationCurrent, '/ended', 'locationCurrent')
+    useEffect(() => {
+        if (!String(location.href).includes(locationCurrent)) {
+            location.href = locationStart
+        }
+    }, [ locationCurrent, locationStart ]);
 
     return (
         <div className="main-content-wrap">

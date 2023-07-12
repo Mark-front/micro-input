@@ -3,7 +3,7 @@ import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 import { useNavigate } from 'react-router-dom';
 import { Step } from '../../store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentStep, setCurrentStepNumber } from '../../store/slices/audioDataSlice';
+import { getCurrentStep, setCurrentStepNumber, setLocationCurrent } from '../../store/slices/audioDataSlice';
 import { RootState } from '../../store/store';
 
 interface AudioRecorderProps {
@@ -58,11 +58,15 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                 reader.onload = () => {
                     getAudio(String(reader.result))
                     if (currentStepNumber >= allStepNumber) {
+                        dispatch(setLocationCurrent('/ended'))
+                        
                         navigate('/ended')
                     } else {
                         if (!isChecked) {
+                            dispatch(setLocationCurrent('/audio'))
                             navigate('/audio')
                         } else {
+                            dispatch(setLocationCurrent('/question'))
                             dispatch(setCurrentStepNumber())
                             navigate('/question')
                         }
