@@ -16,6 +16,7 @@ import { setAllStepNumber, setCurrentStep, setLocationStart, setTasks } from './
 import { QuestionPage } from './pages/QuestionPage';
 import { EndedPage } from './pages/EndedPage';
 import { createBrowserHistory } from 'history';
+import { TestPage } from './pages/StartTest';
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,9 @@ const router = createBrowserRouter([
     {
         path: '/ended',
         element: <EndedPage/>,
+    }, {
+        path: '/test',
+        element: <TestPage/>,
     },
 ]);
 

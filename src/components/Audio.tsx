@@ -4,6 +4,7 @@ interface IAudioProps {
     className?: string;
     srcAudio?: string;
     onEnded?: () => void
+    time?: number
 }
 
 export const Audio = memo((props: IAudioProps) => {
@@ -11,6 +12,7 @@ export const Audio = memo((props: IAudioProps) => {
         className = '',
         srcAudio,
         onEnded,
+        time,
     } = props;
 
 
@@ -25,21 +27,26 @@ export const Audio = memo((props: IAudioProps) => {
     const [ progressPresent, setProgressPresent ] = useState(0);
 
     const playAudio = useCallback(() => {
-        audio.current?.play()
+        if (audio.current) {
+            audio.current.volume = 0.25
+            audio.current?.play()
+        }
     }, []);
 
     const timeUpdate = useCallback(() => {
-        setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
-        setDuration(Math.floor(audio.current?.duration ?? 0))
-        setProgressPresent(currentTime / duration * 100)
-    }, [ currentTime, duration ]);
+        if (!time) {
+            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
+            setDuration(Math.floor(audio.current?.duration ?? 0))
+            setProgressPresent(currentTime / duration * 100)
+        } else {
+            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
+            setDuration(Math.floor(time))
+            setProgressPresent(currentTime / duration * 100)
+        }
+    }, [ currentTime, duration, time ]);
 
     useEffect(() => {
         audio.current?.addEventListener('loadeddata', () => {
-            if (audio.current?.duration !== Infinity) {
-
-                console.log('inf')
-            }
             if (audio.current?.duration && audio.current?.duration !== Infinity) {
                 setDuration(Math.floor(audio.current?.duration))
                 setCurrentTime(Math.floor(audio.current?.currentTime))
@@ -77,6 +84,12 @@ export const Audio = memo((props: IAudioProps) => {
                 onLoadedDataCapture={timeUpdate}
                 onLoadedMetadata={timeUpdate}
                 onEndedCapture={onEnded}
+                onDurationChange={(ev) => {
+                    if (ev.currentTarget.duration !== Infinity) {
+                        console.log(ev.currentTarget.duration)
+                        setDuration(Math.floor(ev.currentTarget.duration))
+                    }
+                }}
             >
                 <source
                     src={srcAudio} // test audio http://d2cstorage-a.akamaihd.net/wbr/gotnext/8578.mp3

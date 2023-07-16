@@ -1,14 +1,14 @@
 import React, { memo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setLocationCurrent } from '../../store/slices/audioDataSlice';
+import { setLocationCurrent } from '../store/slices/audioDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '../store/store';
 
-interface IMicCheckProps {
+interface ITestPageProps {
     className?: string;
 }
 
-export const MicCheck = memo((props: IMicCheckProps) => {
+export const TestPage = memo((props: ITestPageProps) => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
@@ -31,11 +31,11 @@ export const MicCheck = memo((props: IMicCheckProps) => {
                     <button
                         className="audio-button button-blue"
                         onClick={() => {
-                            dispatch(setLocationCurrent('/pause'))
-                            navigate('/pause')
+                            dispatch(setLocationCurrent('/question'))
+                            navigate('/question')
                         }}
                     >
-                        Начать проверку
+                        Начать тест
                     </button>
                 </div>
             </div>
@@ -43,4 +43,4 @@ export const MicCheck = memo((props: IMicCheckProps) => {
     );
 })
 
-MicCheck.displayName = 'MicCheck'
+TestPage.displayName = 'TestPage'
