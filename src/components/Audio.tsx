@@ -3,8 +3,8 @@ import React, { memo, SyntheticEvent, useCallback, useEffect, useRef, useState }
 interface IAudioProps {
     className?: string;
     srcAudio?: string;
-    onEnded?: () => void
-    time?: number
+    onEnded?: () => void;
+    time?: number;
 }
 
 export const Audio = memo((props: IAudioProps) => {
@@ -14,11 +14,12 @@ export const Audio = memo((props: IAudioProps) => {
         onEnded,
         time,
     } = props;
-
-
+    
+    
+    const [ isPlay, setIsPlay ] = useState(false);
     const handlePlay = useCallback((e: SyntheticEvent<HTMLAudioElement>) => {
-        console.log(e)
-    }, [])
+        console.log(e);
+    }, []);
 
     const audio = useRef<HTMLAudioElement>(null);
 
@@ -28,38 +29,41 @@ export const Audio = memo((props: IAudioProps) => {
 
     const playAudio = useCallback(() => {
         if (audio.current) {
-            audio.current.volume = 0.25
-            audio.current?.play()
+            audio.current.volume = 0.25;
+            audio.current?.play();
         }
     }, []);
 
     const timeUpdate = useCallback(() => {
         if (!time) {
-            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
-            setDuration(Math.floor(audio.current?.duration ?? 0))
-            setProgressPresent(currentTime / duration * 100)
+            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0));
+            setDuration(Math.floor(audio.current?.duration ?? 0));
+            setProgressPresent(currentTime / duration * 100);
         } else {
-            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0))
-            setDuration(Math.floor(time))
-            setProgressPresent(currentTime / duration * 100)
+            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0));
+            setDuration(Math.floor(time));
+            setProgressPresent(currentTime / duration * 100);
         }
     }, [ currentTime, duration, time ]);
 
     useEffect(() => {
         audio.current?.addEventListener('loadeddata', () => {
             if (audio.current?.duration && audio.current?.duration !== Infinity) {
-                setDuration(Math.floor(audio.current?.duration))
-                setCurrentTime(Math.floor(audio.current?.currentTime))
-                playAudio()
+                setDuration(Math.floor(audio.current?.duration));
+                setCurrentTime(Math.floor(audio.current?.currentTime));
+                playAudio();
             }
-        })
+        });
+        audio.current?.addEventListener('play', () => {
+            setIsPlay(true);
+        });
     }, [ playAudio ]);
 
     return (
         <>
             <div className="play-progress">
                 {/* Кнопка для запуска аудио нужна из-за https://developer.chrome.com/blog/autoplay/ */}
-                <button onClick={playAudio} className='play-btn'>
+                {!isPlay && <button onClick={playAudio} className='play-btn'>
                     <svg
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +72,7 @@ export const Audio = memo((props: IAudioProps) => {
                     >
                         <path d="M179.07,105L30.93,210V0L179.07,105z"/>
                     </svg>
-                </button>
+                </button>}
                 <div className="progress-bar">
                     <div className="progress-bar-start">{currentTime}</div>
                     <div className="progress-bar-end">{duration}</div>
@@ -86,8 +90,8 @@ export const Audio = memo((props: IAudioProps) => {
                 onEndedCapture={onEnded}
                 onDurationChange={(ev) => {
                     if (ev.currentTarget.duration !== Infinity) {
-                        console.log(ev.currentTarget.duration)
-                        setDuration(Math.floor(ev.currentTarget.duration))
+                        console.log(ev.currentTarget.duration);
+                        setDuration(Math.floor(ev.currentTarget.duration));
                     }
                 }}
             >
@@ -98,6 +102,6 @@ export const Audio = memo((props: IAudioProps) => {
             </audio>
         </>
     );
-})
+});
 
-Audio.displayName = 'Audio'
+Audio.displayName = 'Audio';

@@ -127,10 +127,9 @@ height: 250px;
 
 .audio-icon {
     display: inline-block;
-    content: url(../images/audio-icon.svg);
+    background: url(../images/audio-icon.svg) no-repeat no-repeat center center;
     width: 58px;
     height: 62px;
-
 }
 
 .main-content__text, .audio-text {

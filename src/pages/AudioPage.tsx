@@ -1,5 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { memo, useCallback } from 'react';
 import { Audio } from '../components/Audio';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
@@ -44,12 +43,24 @@ export const AudioPage = memo((props: IAudioPageProps) => {
     return (
         <div className="main-content-wrap">
             <Audio srcAudio={audio[number]} onEnded={onEnded} time={timeForAnswer}/>
-            {!isChecked && <button className="audio-button button-blue center"
-                onClick={() => {
-                    dispatch(setLocationCurrent('/micro/pause'))
-                }}>
-                Проверить еще раз
-            </button>}
+            {!isChecked && (
+                <>
+                    <button className="audio-button button-blue center mb-5"
+                        onClick={() => {
+                            dispatch(setLocationCurrent('/micro/pause'))
+                        }}>
+                        Проверить еще раз
+                    </button>
+                    <button
+                        className="audio-button button-blue"
+                        onClick={() => {
+                            dispatch(setLocationCurrent('/micro/question'))
+                        }}
+                    >
+                        Начать тест
+                    </button>
+                </>)
+            }
         </div>
     );
 });

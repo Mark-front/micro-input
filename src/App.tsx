@@ -63,7 +63,8 @@ function App() {
     const isLoaded = useSelector((state: RootState) => state.audio.isLoadedPage);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
     const dispatch = useDispatch()
-
+    // @ts-ignore
+    const audioImg = window.settingsForMicro.audioImg
     let content: ReactNode;
     if (isLoading) {
         content = (
@@ -98,10 +99,14 @@ function App() {
             dispatch(setAllStepNumber((task?.steps.length ?? Infinity) - 1))
         }
     }, [ currentStepNumber, data, dispatch, isChecked, isSuccess, task ]);
+    
+    const style = {
+        content:  `url(${audioImg})`,
+    }
     return (
         <div className="main-container container">
             <div className="head-content">
-                <div className="audio-icon"></div>
+                <div className="audio-icon" style={style}></div>
                 <h1 className="audio-head">Онлайн тестирование</h1>
             </div>
             {content}

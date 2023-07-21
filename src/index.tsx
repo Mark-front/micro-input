@@ -12,6 +12,7 @@ const root = ReactDOM.createRoot(
 //     testPath: '/db.json',
 //     userId: 'sadfqwe12341234123',
 //     ajaxPath: '/local/ajax/',
+//     audioImg: '/images/audio-icon.svg',
 // }
 root.render(
     <React.StrictMode>
