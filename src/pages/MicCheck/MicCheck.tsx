@@ -9,17 +9,11 @@ interface IMicCheckProps {
 }
 
 export const MicCheck = memo((props: IMicCheckProps) => {
-    const navigate = useNavigate();
+    
     const dispatch = useDispatch()
 
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
 
     return (
         <div className="main-content-wrap">
@@ -31,8 +25,7 @@ export const MicCheck = memo((props: IMicCheckProps) => {
                     <button
                         className="audio-button button-blue"
                         onClick={() => {
-                            dispatch(setLocationCurrent('/pause'))
-                            navigate('/pause')
+                            dispatch(setLocationCurrent('/micro/pause'))
                         }}
                     >
                         Начать проверку

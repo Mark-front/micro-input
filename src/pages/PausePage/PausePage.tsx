@@ -14,21 +14,13 @@ export const PausePage = memo((props: ICountDownPageProps) => {
         className = '',
     } = props;
 
-    const navigate = useNavigate();
+    
 
     const currentStep = useSelector(getCurrentStep)
     const dispatch = useDispatch()
 
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
-
-    console.log(locationCurrent, '/pause', 'locationCurrent')
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">
@@ -36,8 +28,7 @@ export const PausePage = memo((props: ICountDownPageProps) => {
                     <div className="audio-text">Приготовьтесь</div>
                     <div className="countdown">
                         <CountdownTimer time={currentStep?.pause ?? 5} isPlay onEnd={() => {
-                            dispatch(setLocationCurrent('/recorder'))
-                            navigate('/recorder')
+                            dispatch(setLocationCurrent('/micro/recorder'))
                         }}/>
                     </div>
                 </div>

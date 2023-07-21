@@ -19,14 +19,6 @@ export const AudioRecorderPage = memo((props: IAudioRecorderPageProps) => {
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
 
-
-    console.log(locationCurrent, '/recorder', 'locationCurrent')
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
-
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">

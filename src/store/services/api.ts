@@ -10,7 +10,8 @@ export const api = createApi({
     ),
     endpoints: (builder) => ({
         getTask: builder.query<{ tasks: Task[] }, string | undefined | null>({
-            query: (id) => '/db.json',
+            // @ts-ignore
+            query: (id) => `${window.settingsForMicro.testPath}`,
         }),
     }),
 })

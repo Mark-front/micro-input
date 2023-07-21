@@ -13,7 +13,7 @@ export const TaskPage = memo((props: IMainPageProps) => {
         className = '',
     } = props;
 
-    const navigate = useNavigate();
+    
     const [
         microAvailable,
         setMicroAvailable,
@@ -28,8 +28,7 @@ export const TaskPage = memo((props: IMainPageProps) => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
             setMicroAvailable(true)
             if (microAvailable && !isChecked) {
-                dispatch(setLocationCurrent('/mic-check'))
-                navigate('/mic-check')
+                dispatch(setLocationCurrent('/micro/mic-check'))
             }
         }).catch((e) => {
             setError(true)
@@ -43,28 +42,19 @@ export const TaskPage = memo((props: IMainPageProps) => {
 
     useEffect(() => {
         if (microAvailable && !isChecked) {
-            dispatch(setLocationCurrent('/mic-check'))
-            navigate('/mic-check')
+            dispatch(setLocationCurrent('/micro/mic-check'))
         }
         if (isEnded) {
-            dispatch(setLocationCurrent('/ended'))
-            navigate('/ended')
+            dispatch(setLocationCurrent('/micro/ended'))
         }
         if (isChecked) {
-            dispatch(setLocationCurrent('/question'))
-            navigate('/question')
+            dispatch(setLocationCurrent('/micro/question'))
         }
-    }, [ dispatch, isChecked, isEnded, microAvailable, navigate ]);
+    }, [ dispatch, isChecked, isEnded, microAvailable ]);
 
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
-
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
+    
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">

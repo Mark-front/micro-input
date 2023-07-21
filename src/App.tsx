@@ -6,7 +6,6 @@ import './styles/audio.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MicCheck } from './pages/MicCheck/MicCheck';
 import { AudioRecorderPage } from './pages/AudioRecorderPage/AudioRecorderPage';
-import { PausePage } from './pages/PausePage/PausePage';
 import { AudioPage } from './pages/AudioPage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './store/store';
@@ -17,60 +16,53 @@ import { QuestionPage } from './pages/QuestionPage';
 import { EndedPage } from './pages/EndedPage';
 import { createBrowserHistory } from 'history';
 import { TestPage } from './pages/StartTest';
+import { PausePage } from './pages/PausePage/PausePage';
+import { StepNavigator } from './pages/StepNavigator';
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/micro/',
         element: <TaskPage/>,
     },
     {
-        path: '/pause',
+        path: '/micro/pause',
         element: <PausePage/>,
     },
     {
-        path: '/mic-check',
+        path: '/micro/mic-check',
         element: <MicCheck/>,
     },
     {
-        path: '/recorder',
+        path: '/micro/recorder',
         element: <AudioRecorderPage/>,
     },
     {
-        path: '/audio',
+        path: '/micro/audio',
         element: <AudioPage/>,
     },
     {
-        path: '/question',
+        path: '/micro/question',
         element: <QuestionPage/>,
     },
     {
-        path: '/ended',
+        path: '/micro/ended',
         element: <EndedPage/>,
     }, {
-        path: '/test',
+        path: '/micro/test',
         element: <TestPage/>,
     },
 ]);
 
 function App() {
     // пример http://localhost:3006/?taskID=1
-    const id: string = new URLSearchParams(location.search).get('taskID') || ''
-    const { data, isError, isLoading, isSuccess } = useGetTaskQuery(id);
+    // const id: string = new URLSearchParams(location.search).get('taskID') || ''
+    const { data, isError, isLoading, isSuccess } = useGetTaskQuery('0');
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
-    const task = useSelector((state: RootState) => state.audio.tasks?.[Number(id)]);
+    const task = useSelector((state: RootState) => state.audio.tasks?.[Number(0)]);
     const isLoaded = useSelector((state: RootState) => state.audio.isLoadedPage);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
     const dispatch = useDispatch()
-
-    const history = createBrowserHistory();
-
-    useEffect(() => {
-        if (String(location.href).includes('taskID')) {
-            sessionStorage.setItem('startHref', location.href)
-            dispatch(setLocationStart(location.href))
-        }
-    }, [ dispatch, history, id, isLoaded, locationStart ]);
 
     let content: ReactNode;
     if (isLoading) {
@@ -88,7 +80,7 @@ function App() {
     }
     if (isSuccess || task) {
         content = (
-            <RouterProvider router={router}/>
+            <StepNavigator/>
         );
     }
 

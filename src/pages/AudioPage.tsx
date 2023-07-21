@@ -15,7 +15,7 @@ export const AudioPage = memo((props: IAudioPageProps) => {
         className = '',
     } = props;
 
-    const navigate = useNavigate();
+    
     const audio = useSelector((state: RootState) => state.audio.value);
     const number = useSelector(getCurrentStepNumber);
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
@@ -28,33 +28,25 @@ export const AudioPage = memo((props: IAudioPageProps) => {
         if (!isChecked) {
             dispatch(toggleCheck())
             dispatch(deleteCheckAudio())
-            dispatch(setLocationCurrent('/test'))
-            navigate('/test')
+            dispatch(setLocationCurrent('/micro/test'))
             return
         }
         dispatch(setLocationCurrent('/'))
-        navigate('/')
-    }, [ dispatch, isChecked, navigate ]);
+    }, [ dispatch, isChecked ]);
 
 
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
 
 
-    console.log(locationCurrent, '/audio', 'locationCurrent')
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
+    console.log(locationCurrent, '/micro/audio', 'locationCurrent')
 
     return (
         <div className="main-content-wrap">
             <Audio srcAudio={audio[number]} onEnded={onEnded} time={timeForAnswer}/>
             {!isChecked && <button className="audio-button button-blue center"
                 onClick={() => {
-                    dispatch(setLocationCurrent('/pause'))
-                    navigate('/pause')
+                    dispatch(setLocationCurrent('/micro/pause'))
                 }}>
                 Проверить еще раз
             </button>}

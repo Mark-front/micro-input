@@ -14,7 +14,7 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
         className = '',
     } = props;
 
-    const navigate = useNavigate();
+    
     const dispatch = useDispatch()
 
     const audio = useSelector((state: RootState) => state.audio.currentStep?.question.audio)
@@ -22,21 +22,12 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
 
     const onEnded = useCallback(() => {
         console.log('end')
-        dispatch(setLocationCurrent('/pause'))
-        navigate('/pause')
-    }, [ dispatch, navigate ]);
+        dispatch(setLocationCurrent('/micro/pause'))
+    }, [ dispatch ]);
 
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
-
-    console.log(locationCurrent, '/question', 'locationCurrent')
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
-
+    
     return (
         <div className="main-content-wrap">
             <div className="audio-text">{text ?? 'Вопрос:'}</div>

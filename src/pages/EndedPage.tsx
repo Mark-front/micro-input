@@ -19,8 +19,10 @@ const fetchRequest = async (props: IRequestProps) => {
     for (const key in data) {
         formData.append(key, data[key]);
     }
-
-    const res = await fetch('/local/ajax/', {
+    // @ts-ignore
+    formData.append('userId', window.settingsForMicro.userId);
+    // @ts-ignore
+    const res = await fetch(window.settingsForMicro.ajaxPath, {
         method: 'post',
         body: JSON.stringify(formData),
     })
@@ -44,14 +46,6 @@ export const EndedPage = memo(() => {
 
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
-
-    console.log(locationCurrent, '/ended', 'locationCurrent')
-    useEffect(() => {
-        if (!String(location.href).includes(locationCurrent)) {
-            location.href = locationStart
-        }
-    }, [ locationCurrent, locationStart ]);
 
     return (
         <div className="main-content-wrap">

@@ -32,7 +32,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
     }
 
     const voice = useRef([]);
-    const navigate = useNavigate();
+    
     const currentStep = useSelector(getCurrentStep)
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const dispatch = useDispatch()
@@ -58,17 +58,13 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                 reader.onload = () => {
                     getAudio(String(reader.result))
                     if (currentStepNumber >= allStepNumber) {
-                        dispatch(setLocationCurrent('/ended'))
-                        
-                        navigate('/ended')
+                        dispatch(setLocationCurrent('/micro/ended'))
                     } else {
                         if (!isChecked) {
-                            dispatch(setLocationCurrent('/audio'))
-                            navigate('/audio')
+                            dispatch(setLocationCurrent('/micro/audio'))
                         } else {
-                            dispatch(setLocationCurrent('/question'))
+                            dispatch(setLocationCurrent('/micro/question'))
                             dispatch(setCurrentStepNumber())
-                            navigate('/question')
                         }
                     }
 
@@ -77,7 +73,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
         }).catch((e) => {
             console.error(e);
         })
-    }, [ allStepNumber, currentStepNumber, dispatch, getAudio, isChecked, navigate ]);
+    }, [ allStepNumber, currentStepNumber, dispatch, getAudio, isChecked ]);
 
     return (
         <>
