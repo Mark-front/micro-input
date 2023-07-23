@@ -9,7 +9,7 @@ export const api = createApi({
         }
     ),
     endpoints: (builder) => ({
-        getTask: builder.query<{ tasks: Task[] }, string | undefined | null>({
+        getTask: builder.query<{ test_question: { audio: string }, tasks: Task[] }, string | undefined | null>({
             // @ts-ignore
             query: (id) => `${window.settingsForMicro.testPath}`,
         }),

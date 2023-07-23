@@ -9,6 +9,9 @@ import { AudioPage } from './AudioPage';
 import { QuestionPage } from './QuestionPage';
 import { EndedPage } from './EndedPage';
 import { TestPage } from './StartTest';
+import { PauseBefore } from './PausePage/PauseBefore';
+import { NextPage } from './NaxtPage';
+
 export const StepNavigator = memo(() => {
     const locCur = useSelector((state: RootState) => state.audio.locationCurrent);
     switch (locCur) {
@@ -18,6 +21,9 @@ export const StepNavigator = memo(() => {
         case '/micro/pause': {
             return <PausePage/>
         }
+        case '/micro/pause-before': {
+            return <PauseBefore/>
+        }
         case '/micro/mic-check': {
             return <MicCheck/>
         }
@@ -26,6 +32,9 @@ export const StepNavigator = memo(() => {
         }
         case '/micro/audio': {
             return <AudioPage/>
+        }
+        case '/micro/next': {
+            return <NextPage/>
         }
         case '/micro/question': {
             return <QuestionPage/>

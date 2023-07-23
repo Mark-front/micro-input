@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
-import { useNavigate } from 'react-router-dom';
 import { Step } from '../../store/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentStep, setCurrentStepNumber, setLocationCurrent } from '../../store/slices/audioDataSlice';
@@ -18,7 +17,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
         getAudio,
         step,
     } = props;
-
+    
     const mediaRecorder = useRef<MediaRecorder>()
     const handleStartRecording = () => {
         if (mediaRecorder.current) {
@@ -30,7 +29,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
             mediaRecorder.current.stop();
         }
     }
-
+    
     const voice = useRef([]);
     
     const currentStep = useSelector(getCurrentStep)
@@ -38,8 +37,8 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
     const dispatch = useDispatch()
     const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
     const allStepNumber = useSelector((state: RootState) => state.audio.allStepNumber);
-
-
+    
+    
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
             mediaRecorder.current = new MediaRecorder(stream as MediaStream);
@@ -54,7 +53,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                 });
                 const reader = new FileReader()
                 reader.readAsDataURL(blob)
-
+                
                 reader.onload = () => {
                     getAudio(String(reader.result))
                     if (currentStepNumber >= allStepNumber) {
@@ -63,18 +62,18 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                         if (!isChecked) {
                             dispatch(setLocationCurrent('/micro/audio'))
                         } else {
-                            dispatch(setLocationCurrent('/micro/question'))
+                            dispatch(setLocationCurrent('/micro/next'))
                             dispatch(setCurrentStepNumber())
                         }
                     }
-
+                    
                 }
             });
         }).catch((e) => {
             console.error(e);
         })
     }, [ allStepNumber, currentStepNumber, dispatch, getAudio, isChecked ]);
-
+    
     return (
         <>
             <CountdownTimer

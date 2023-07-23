@@ -3,6 +3,9 @@ import { Step, Task } from '../types';
 import { RootState } from '../store';
 
 export interface AudioState {
+    test_question: {
+        audio: string
+    };
     value: (string | undefined)[]
     isChecked: boolean
     currentStepNumber: number
@@ -15,6 +18,9 @@ export interface AudioState {
 }
 
 const initialState: AudioState = {
+    test_question: {
+        audio: '',
+    },
     value: [],
     isChecked: false,
     currentStepNumber: 0,
@@ -37,7 +43,7 @@ export const audioSlice = createSlice({
             const currenArray: (string | undefined)[] = state.value.filter((item, indx) => {
                 return indx !== 0
             });
-
+            
             state.value = [ ...currenArray ]
         },
         toggleCheck: state => {
@@ -64,6 +70,9 @@ export const audioSlice = createSlice({
         setLocationCurrent: (state, action) => {
             state.locationCurrent = action.payload
         },
+        setTestQuestion: (state, action) => {
+            state.test_question.audio = action.payload
+        },
     },
 })
 
@@ -76,7 +85,7 @@ export const { setAllStepNumber } = audioSlice.actions
 export const { toggleCheck } = audioSlice.actions
 export const { deleteCheckAudio } = audioSlice.actions
 export const { setIsLoadedPage } = audioSlice.actions
-export const { setLocationStart } = audioSlice.actions
+export const { setTestQuestion } = audioSlice.actions
 export const { setLocationCurrent } = audioSlice.actions
 
 export const handleEndedTask = (state: RootState) => state.audio.currentStepNumber >= state.audio.allStepNumber

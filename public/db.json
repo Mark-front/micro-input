@@ -1,4 +1,5 @@
 {
+  "test_question": "media/test_question.mp3",
   "tasks": [
     {
       "id": "task1",
@@ -6,27 +7,33 @@
         {
           "id": 1,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": "media/question.mp3",
-            "text": null
+            "text": null,
+            "text_task": null
           },
           "timeForAnswer": 5
         },
         {
           "id": 2,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": "media/question.mp3",
-            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?"
+            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?",
+            "text_task": "Задание нужно сделать быстро. Слушайте..."
           },
           "timeForAnswer": 5
         },
         {
           "id": 3,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": "media/question.mp3",
-            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?"
+            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?",
+            "text_task": "Задание нужно сделать быстро. Слушайте..."
           },
           "timeForAnswer": 5
         }
@@ -38,27 +45,33 @@
         {
           "id": 1,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": "media/question.mp3",
-            "text": null
+            "text": null,
+            "text_task": null
           },
           "timeForAnswer": 5
         },
         {
           "id": 2,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": null,
-            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?"
+            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?",
+            "text_task": null
           },
           "timeForAnswer": 5
         },
         {
           "id": 3,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": null,
-            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?"
+            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?",
+            "text_task": "Задание нужно сделать быстро. Слушайте..."
           },
           "timeForAnswer": 5
         }
@@ -70,27 +83,33 @@
         {
           "id": 1,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": "media/question.mp3",
-            "text": null
+            "text": null,
+            "text_task": null
           },
           "timeForAnswer": 5
         },
         {
           "id": 2,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": null,
-            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?"
+            "text": "Jовллыщ з фщлоываждфыол фдылоавжфдылоа?",
+            "text_task": null
           },
           "timeForAnswer": 5
         },
         {
           "id": 3,
           "pause": 5,
+          "question_pause": 3,
           "question": {
             "audio": null,
-            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?"
+            "text": "Jовллыщ з фщлоыв asdf asdf asa sasdfdasdf asdfasdf a asdfasdf аждфыол фдылоавжфдылоа?",
+            "text_task": "Задание нужно сделать быстро. Слушайте..."
           },
           "timeForAnswer": 5
         }

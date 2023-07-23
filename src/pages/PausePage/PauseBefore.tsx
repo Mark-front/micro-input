@@ -7,7 +7,7 @@ interface ICountDownPageProps {
     className?: string;
 }
 
-export const PausePage = memo((props: ICountDownPageProps) => {
+export const PauseBefore = memo((props: ICountDownPageProps) => {
     const {
         className = '',
     } = props;
@@ -16,14 +16,16 @@ export const PausePage = memo((props: ICountDownPageProps) => {
     const currentStep = useSelector(getCurrentStep)
     const dispatch = useDispatch()
     
+    console.log(currentStep)
+    
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">
                 <div className="main-content__text">
-                    <div className="audio-text">Приготовьтесь к ответу</div>
+                    <div className="audio-text">Приготовьтесь</div>
                     <div className="countdown">
-                        <CountdownTimer time={currentStep?.pause ?? 6} isPlay onEnd={() => {
-                            dispatch(setLocationCurrent('/micro/recorder'))
+                        <CountdownTimer time={currentStep?.question_pause ?? 5} isPlay onEnd={() => {
+                            dispatch(setLocationCurrent('/micro/question'))
                         }}/>
                     </div>
                 </div>
@@ -33,4 +35,4 @@ export const PausePage = memo((props: ICountDownPageProps) => {
     );
 })
 
-PausePage.displayName = 'CountDownPage'
+PauseBefore.displayName = 'CountDownPage'

@@ -20,20 +20,20 @@ export const Audio = memo((props: IAudioProps) => {
     const handlePlay = useCallback((e: SyntheticEvent<HTMLAudioElement>) => {
         console.log(e);
     }, []);
-
+    
     const audio = useRef<HTMLAudioElement>(null);
-
+    
     const [ duration, setDuration ] = useState(0);
     const [ currentTime, setCurrentTime ] = useState(0);
     const [ progressPresent, setProgressPresent ] = useState(0);
-
+    
     const playAudio = useCallback(() => {
         if (audio.current) {
             audio.current.volume = 0.25;
             audio.current?.play();
         }
     }, []);
-
+    
     const timeUpdate = useCallback(() => {
         if (!time) {
             setCurrentTime(Math.floor(audio.current?.currentTime ?? 0));
@@ -45,7 +45,7 @@ export const Audio = memo((props: IAudioProps) => {
             setProgressPresent(currentTime / duration * 100);
         }
     }, [ currentTime, duration, time ]);
-
+    
     useEffect(() => {
         audio.current?.addEventListener('loadeddata', () => {
             if (audio.current?.duration && audio.current?.duration !== Infinity) {
@@ -58,7 +58,7 @@ export const Audio = memo((props: IAudioProps) => {
             setIsPlay(true);
         });
     }, [ playAudio ]);
-
+    
     return (
         <>
             <div className="play-progress">
@@ -91,7 +91,7 @@ export const Audio = memo((props: IAudioProps) => {
                 onDurationChange={(ev) => {
                     if (ev.currentTarget.duration !== Infinity) {
                         console.log(ev.currentTarget.duration);
-                        setDuration(Math.floor(ev.currentTarget.duration));
+                        // setDuration(Math.floor(ev.currentTarget.duration));
                     }
                 }}
             >

@@ -1,8 +1,6 @@
-import React, { memo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { memo } from 'react';
 import { setLocationCurrent } from '../../store/slices/audioDataSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 
 interface IMicCheckProps {
     className?: string;
@@ -11,10 +9,7 @@ interface IMicCheckProps {
 export const MicCheck = memo((props: IMicCheckProps) => {
     
     const dispatch = useDispatch()
-
-    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
-    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
+    
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">
@@ -25,7 +20,7 @@ export const MicCheck = memo((props: IMicCheckProps) => {
                     <button
                         className="audio-button button-blue"
                         onClick={() => {
-                            dispatch(setLocationCurrent('/micro/pause'))
+                            dispatch(setLocationCurrent('/micro/pause-before'))
                         }}
                     >
                         Начать проверку

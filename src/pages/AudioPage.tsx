@@ -13,16 +13,16 @@ export const AudioPage = memo((props: IAudioPageProps) => {
     const {
         className = '',
     } = props;
-
+    
     
     const audio = useSelector((state: RootState) => state.audio.value);
     const number = useSelector(getCurrentStepNumber);
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const timeForAnswer = useSelector((state: RootState) => state.audio.currentStep?.timeForAnswer)
-
-
+    
+    
     const dispatch = useDispatch()
-
+    
     const onEnded = useCallback(() => {
         if (!isChecked) {
             dispatch(toggleCheck())
@@ -32,14 +32,8 @@ export const AudioPage = memo((props: IAudioPageProps) => {
         }
         dispatch(setLocationCurrent('/'))
     }, [ dispatch, isChecked ]);
-
-
-    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
-    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
-
-    console.log(locationCurrent, '/micro/audio', 'locationCurrent')
-
+    
+    
     return (
         <div className="main-content-wrap">
             <Audio srcAudio={audio[number]} onEnded={onEnded} time={timeForAnswer}/>
@@ -51,14 +45,19 @@ export const AudioPage = memo((props: IAudioPageProps) => {
                         }}>
                         Проверить еще раз
                     </button>
-                    <button
-                        className="audio-button button-blue"
-                        onClick={() => {
-                            dispatch(setLocationCurrent('/micro/question'))
-                        }}
-                    >
-                        Начать тест
-                    </button>
+                    
+                    <div className="audio-text center mt-5">
+                        Если вы услышали свой ответ, то можно начинать тест
+                        <button
+                            className="audio-button button-blue"
+                            onClick={() => {
+                                dispatch(toggleCheck())
+                                dispatch(setLocationCurrent('/micro/pause-before'))
+                            }}
+                        >
+                            Начать тест
+                        </button>
+                    </div>
                 </>)
             }
         </div>

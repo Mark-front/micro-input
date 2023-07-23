@@ -1,9 +1,8 @@
-import React, { memo, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { memo, useCallback } from 'react';
 import { Audio } from '../components/Audio';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { setLocationCurrent } from '../store/slices/audioDataSlice';
+import { setLocationCurrent, toggleCheck } from '../store/slices/audioDataSlice';
 
 interface IQuestionPageProps {
     className?: string;
@@ -13,27 +12,38 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     const {
         className = '',
     } = props;
-
+    
     
     const dispatch = useDispatch()
-
-    const audio = useSelector((state: RootState) => state.audio.currentStep?.question.audio)
-    const text = useSelector((state: RootState) => state.audio.currentStep?.question.text)
-
+    
+    const text = useSelector((state: RootState) => state.audio.currentStep?.question.text_task)
+    const isChecked = useSelector((state: RootState) => state.audio.isChecked)
+    const audio = useSelector((state: RootState) =>
+        isChecked ?
+            state.audio.currentStep?.question.audio :
+            state.audio.test_question.audio
+    )
+    
     const onEnded = useCallback(() => {
-        console.log('end')
         dispatch(setLocationCurrent('/micro/pause'))
     }, [ dispatch ]);
-
-    const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
-    const locationStart = useSelector((state: RootState) => state.audio.locationStart);
     
     return (
         <div className="main-content-wrap">
-            <div className="audio-text">{text ?? 'Вопрос:'}</div>
+            <div className="audio-text">{text ?? 'Текст задания:'}</div>
             {
-                (audio) &&
-                <Audio srcAudio={audio} onEnded={onEnded}/>
+                (audio) ?
+                    <Audio srcAudio={audio} onEnded={onEnded}/>
+                    :
+                    <button
+                        className="audio-button button-blue"
+                        onClick={() => {
+                            dispatch(toggleCheck())
+                            dispatch(setLocationCurrent('/micro/pause'))
+                        }}
+                    >
+                        Ответить
+                    </button>
             }
         </div>
     );

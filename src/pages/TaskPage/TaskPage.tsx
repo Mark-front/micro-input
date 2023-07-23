@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { useNavigate } from 'react-router-dom';
 import { handleEndedTask, setLocationCurrent } from '../../store/slices/audioDataSlice';
 
 interface IMainPageProps {
@@ -12,18 +11,18 @@ export const TaskPage = memo((props: IMainPageProps) => {
     const {
         className = '',
     } = props;
-
+    
     
     const [
         microAvailable,
         setMicroAvailable,
     ] = useState(false);
-
+    
     const [
         error,
         setError,
     ] = useState(false);
-
+    
     const handleAudioDevice = () => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
             setMicroAvailable(true)
@@ -36,10 +35,10 @@ export const TaskPage = memo((props: IMainPageProps) => {
         })
     }
     const dispatch = useDispatch()
-
+    
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
     const isEnded = useSelector(handleEndedTask)
-
+    
     useEffect(() => {
         if (microAvailable && !isChecked) {
             dispatch(setLocationCurrent('/micro/mic-check'))
@@ -48,10 +47,10 @@ export const TaskPage = memo((props: IMainPageProps) => {
             dispatch(setLocationCurrent('/micro/ended'))
         }
         if (isChecked) {
-            dispatch(setLocationCurrent('/micro/question'))
+            dispatch(setLocationCurrent('/micro/pause-before'))
         }
     }, [ dispatch, isChecked, isEnded, microAvailable ]);
-
+    
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
     

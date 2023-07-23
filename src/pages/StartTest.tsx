@@ -1,5 +1,4 @@
-import React, { memo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { memo } from 'react';
 import { setLocationCurrent } from '../store/slices/audioDataSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
@@ -11,10 +10,10 @@ interface ITestPageProps {
 export const TestPage = memo((props: ITestPageProps) => {
     
     const dispatch = useDispatch()
-
+    
     const locationCurrent = useSelector((state: RootState) => state.audio.locationCurrent);
     const locationStart = useSelector((state: RootState) => state.audio.locationStart);
-
+    
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">
@@ -25,10 +24,10 @@ export const TestPage = memo((props: ITestPageProps) => {
                     <button
                         className="audio-button button-blue"
                         onClick={() => {
-                            dispatch(setLocationCurrent('/micro/question'))
+                            dispatch(setLocationCurrent('/micro/pause-before'))
                         }}
                     >
-                        Начать тест
+                        Проверить
                     </button>
                 </div>
             </div>
