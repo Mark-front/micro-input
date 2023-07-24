@@ -13,7 +13,7 @@ const fetchRequest = async (props: IRequestProps) => {
     } = props;
     
     const formData = new FormData();
-    
+    console.log(data)
     formData.append('action', action)
     
     for (const key in data) {
