@@ -173,7 +173,7 @@ height: 250px;
 
 /* button */
 .audio-button {
-
+    cursor: pointer;
     margin-top: 45px;
     box-sizing: border-box;
     justify-content: center;
@@ -288,6 +288,7 @@ height: 250px;
 .progress-bar-inner {
     height: 100%;
     width: 0;
+    transition: width .5s ease;
     background-color: #70B7DD;
     position: absolute;
 }
