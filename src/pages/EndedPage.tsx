@@ -4,26 +4,28 @@ import { RootState } from '../store/store';
 
 interface IRequestProps {
     action: string,
-    data?: Record<string, any>
+    data?: Record<string, any>,
+    path: string
 }
 
-const fetchRequest = async (props: IRequestProps) => {
+export const fetchRequest = async (props: IRequestProps) => {
     const {
-        action, data,
+        action, data, path,
     } = props;
     
     const formData = new FormData();
-    console.log(data)
     formData.append('action', action)
     
     for (const key in data) {
-        formData.append(key, data[key]);
+        console.log(...data[key])
+        // @ts-ignore
+        formData.append(key, ...data[key]);
     }
     // @ts-ignore
     formData.append('userId', window.settingsForMicro.userId);
     
     // @ts-ignore
-    const res = await fetch(window.settingsForMicro.ajaxPath, {
+    const res = await fetch(path, {
         method: 'post',
         body: formData,
     })
@@ -43,13 +45,15 @@ export const EndedPage = memo(() => {
         let newObj = {}
         const newData = answer.map((item, index) =>
             // @ts-ignore
-            ({ [`${window.settingsForMicro.userId + '_' + index}`]: `${item}` }))
+            ({ 'microphone': `${item}` }))
         newData.forEach((item) => {
             newObj = { ...newObj, ...item }
         })
         await fetchRequest({
             action: 'WebForm/sendAnswer',
             data: newObj,
+            // @ts-ignore
+            path: window.settingsForMicro.formAjaxPath,
         })
     }
     return (

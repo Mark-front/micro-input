@@ -4,6 +4,9 @@ import { Step } from '../../store/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentStep, setCurrentStepNumber, setLocationCurrent } from '../../store/slices/audioDataSlice';
 import { RootState } from '../../store/store';
+// @ts-ignore
+import lamejs from 'lamejs';
+import { fetchRequest } from '../../pages/EndedPage';
 
 interface AudioRecorderProps {
     className?: string;
@@ -53,9 +56,23 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                 });
                 const reader = new FileReader()
                 reader.readAsDataURL(blob)
+                console.log(voice.current)
                 
-                reader.onload = () => {
+                reader.onload = async () => {
                     getAudio(String(reader.result))
+                    
+                    if (isChecked) {
+                        const response = await fetchRequest({
+                            action: 'WebForm/sendAnswer',
+                            data: {
+                                'uploadedFile': [ blob, 'microphone.mp3' ],
+                            },
+                            // @ts-ignore
+                            'path': window.settingsForMicro.uploadAjaxPath,
+                        })
+                        console.log(response)
+                    }
+                    
                     if (currentStepNumber >= allStepNumber) {
                         dispatch(setLocationCurrent('/micro/ended'))
                     } else {

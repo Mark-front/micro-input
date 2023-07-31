@@ -25,9 +25,6 @@ export const AudioPage = memo((props: IAudioPageProps) => {
     
     const onEnded = useCallback(() => {
         if (!isChecked) {
-            dispatch(toggleCheck())
-            dispatch(deleteCheckAudio())
-            dispatch(setLocationCurrent('/micro/test'))
             return
         }
         dispatch(setLocationCurrent('/'))
@@ -52,6 +49,8 @@ export const AudioPage = memo((props: IAudioPageProps) => {
                             className="audio-button button-blue"
                             onClick={() => {
                                 dispatch(toggleCheck())
+                                dispatch(deleteCheckAudio())
+                                dispatch(setLocationCurrent('/micro/test'))
                                 dispatch(setLocationCurrent('/micro/pause-before'))
                             }}
                         >
