@@ -6,7 +6,6 @@ import { getCurrentStep, setCurrentStepNumber, setFileData, setLocationCurrent }
 import { RootState } from '../../store/store';
 // @ts-ignore
 import lamejs from 'lamejs';
-import { fetchRequest } from '../../pages/EndedPage';
 
 interface AudioRecorderProps {
     className?: string;
@@ -56,42 +55,36 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                 });
                 const reader = new FileReader()
                 reader.readAsDataURL(blob)
-                console.log(voice.current)
                 
                 reader.onload = async () => {
                     getAudio(String(reader.result))
                     
                     //
-                    // const mp3File = new File([ blob ], 'microphone.mp3', {
-                    //     type: 'audio/mp3',
-                    // })
+                    const mp3File = new File([ blob ], 'microphone.mp3', {
+                        type: 'audio/mp3',
+                    })
                     if (isChecked) {
+                        const formData = new FormData()
+                        
                         // @ts-ignore
-                        // const res = await fetch(window.settingsForMicro.uploadAjaxPath, {
-                        //     method: 'post',
-                        //     body: JSON.stringify({
-                        //         'uploadedFile': mp3File,
-                        //         // @ts-ignore
-                        //         'userId': window.settingsForMicro.userId,
-                        //     }),
-                        // })
-                        //     .then((response) => response.json())
-                        //     .catch((error) => {
-                        //         console.log(error)
-                        //     });
-                        
-                        const response = await fetchRequest({
-                            action: 'WebForm/sendAnswer',
-                            data: {
-                                'file': [ blob, 'microphone.mp3' ],
-                                'questionNumber': [ currentStepNumber ],
-                            },
-                            // @ts-ignore
-                            'path': window.settingsForMicro.uploadAjaxPath,
+                        formData.append('file', mp3File, `${window.settingsForMicro.userId}.mp3`)
+                        // @ts-ignore
+                        formData.append('questionNumber', currentStepNumber + 1)
+                        // @ts-ignore
+                        formData.append('studentId', window.settingsForMicro.userId)
+                        // @ts-ignore
+                        const response = await fetch(window.settingsForMicro.uploadAjaxPath, {
+                            method: 'post',
+                            // headers: {
+                            //     'Content-type': 'multipart/form-data',
+                            // },
+                            body: formData,
                         })
-                        
-                        console.log(response)
-                        dispatch(setFileData(response.data.fileData))
+                            .then((response) => response.json())
+                            .catch((error) => {
+                                console.log(error)
+                            });
+                        dispatch(setFileData(response.path))
                     }
                     
                     if (currentStepNumber >= allStepNumber) {

@@ -3,30 +3,29 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 
 interface IRequestProps {
-    action: string,
+    action?: string,
     data?: Record<string, any>,
     path: string
 }
 
 export const fetchRequest = async (props: IRequestProps) => {
     const {
-        action, data, path,
+        data, path,
     } = props;
     
     const formData = new FormData();
-    formData.append('action', action)
     
     for (const key in data) {
-        console.log(...data[key])
         // @ts-ignore
-        formData.append(key, ...data[key]);
+        formData.append(key, data[key]);
     }
-    // @ts-ignore
-    formData.append('studentId', window.settingsForMicro.userId);
     
     // @ts-ignore
     const res = await fetch(path, {
         method: 'post',
+        headers: {
+            'Content-type': 'multipart/form-data',
+        },
         body: formData,
     })
         .then((response) => response.json())
@@ -42,10 +41,10 @@ export const EndedPage = memo(() => {
     // @ts-ignore
     const sendFeedback = async (ev) => {
         ev.preventDefault()
+        console.log([ ...answerFiles ])
         const res = await fetchRequest({
-            action: 'WebForm/sendAnswer',
             data: {
-                'fileNames': JSON.stringify([ ...answerFiles ]),
+                fileNames: JSON.stringify([ ...answerFiles ]),
             },
             // @ts-ignore
             path: window.settingsForMicro.formAjaxPath,

@@ -1,6 +1,13 @@
 import React, { memo, ReactNode } from 'react';
 
-export type valType = '/micro/pause' | '/micro/mic-check' | '/micro/recorder' | '/micro/audio' | '/micro/question' | '/micro/ended' | '/'
+export type valType =
+    '/micro/pause'
+    | '/micro/mic-check'
+    | '/micro/recorder'
+    | '/micro/audio'
+    | '/micro/question'
+    | '/micro/ended'
+    | '/'
 
 interface IcheckLocationProps {
     val: valType;
@@ -12,8 +19,8 @@ export const CheckLocation = memo((props: IcheckLocationProps) => {
         val,
         children,
     } = props;
-
-
+    
+    
     return (
         <>
             {children}
@@ -22,3 +29,5 @@ export const CheckLocation = memo((props: IcheckLocationProps) => {
 })
 
 CheckLocation.displayName = 'checkLocation';
+
+
