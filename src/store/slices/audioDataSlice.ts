@@ -2,6 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import { Step, Task } from '../types';
 import { RootState } from '../store';
 
+
+type TFileData = {
+    name: string,
+    path: string
+}
+
 export interface AudioState {
     test_question: {
         audio: string
@@ -15,6 +21,7 @@ export interface AudioState {
     isLoadedPage: boolean
     locationStart: string
     locationCurrent: string
+    fileData: TFileData[]
 }
 
 const initialState: AudioState = {
@@ -30,6 +37,7 @@ const initialState: AudioState = {
     isLoadedPage: false,
     locationStart: '/',
     locationCurrent: '/',
+    fileData: [],
 }
 
 export const audioSlice = createSlice({
@@ -73,6 +81,9 @@ export const audioSlice = createSlice({
         setTestQuestion: (state, action) => {
             state.test_question.audio = action.payload
         },
+        setFileData: (state, action) => {
+            state.fileData = [ ...state.fileData, action.payload ]
+        },
     },
 })
 
@@ -87,6 +98,7 @@ export const { deleteCheckAudio } = audioSlice.actions
 export const { setIsLoadedPage } = audioSlice.actions
 export const { setTestQuestion } = audioSlice.actions
 export const { setLocationCurrent } = audioSlice.actions
+export const { setFileData } = audioSlice.actions
 
 export const handleEndedTask = (state: RootState) => state.audio.currentStepNumber >= state.audio.allStepNumber
 export const getCurrentStep = (state: RootState) => state.audio.currentStep

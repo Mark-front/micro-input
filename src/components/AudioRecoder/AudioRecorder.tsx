@@ -2,10 +2,11 @@ import React, { memo, useEffect, useRef } from 'react';
 import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 import { Step } from '../../store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentStep, setCurrentStepNumber, setLocationCurrent } from '../../store/slices/audioDataSlice';
+import { getCurrentStep, setCurrentStepNumber, setFileData, setLocationCurrent } from '../../store/slices/audioDataSlice';
 import { RootState } from '../../store/store';
 // @ts-ignore
 import lamejs from 'lamejs';
+import { fetchRequest } from '../../pages/EndedPage';
 
 interface AudioRecorderProps {
     className?: string;
@@ -60,36 +61,38 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                 reader.onload = async () => {
                     getAudio(String(reader.result))
                     
-                    
-                    const mp3File = new File([ blob ], 'microphone.mp3', {
-                        type: 'audio/mp3',
-                    })
-                    // if (isChecked) {
-                    
-                    // @ts-ignore
-                    const res = await fetch(window.settingsForMicro.uploadAjaxPath, {
-                        method: 'post',
-                        body: JSON.stringify({
-                            'uploadedFile': mp3File,
-                            // @ts-ignore
-                            'userId': window.settingsForMicro.userId,
-                        }),
-                    })
-                        .then((response) => response.json())
-                        .catch((error) => {
-                            console.log(error)
-                        });
-                    
-                    // const response = await fetchRequest({
-                    //     action: 'WebForm/sendAnswer',
-                    //     data: {
-                    //         'uploadedFile': [ blob, 'microphone.mp3' ],
-                    //     },
-                    //     // @ts-ignore
-                    //     'path': window.settingsForMicro.uploadAjaxPath,
+                    //
+                    // const mp3File = new File([ blob ], 'microphone.mp3', {
+                    //     type: 'audio/mp3',
                     // })
-                    console.log(res)
-                    // }
+                    if (isChecked) {
+                        // @ts-ignore
+                        // const res = await fetch(window.settingsForMicro.uploadAjaxPath, {
+                        //     method: 'post',
+                        //     body: JSON.stringify({
+                        //         'uploadedFile': mp3File,
+                        //         // @ts-ignore
+                        //         'userId': window.settingsForMicro.userId,
+                        //     }),
+                        // })
+                        //     .then((response) => response.json())
+                        //     .catch((error) => {
+                        //         console.log(error)
+                        //     });
+                        
+                        const response = await fetchRequest({
+                            action: 'WebForm/sendAnswer',
+                            data: {
+                                'file': [ blob, 'microphone.mp3' ],
+                                'questionNumber': [ currentStepNumber ],
+                            },
+                            // @ts-ignore
+                            'path': window.settingsForMicro.uploadAjaxPath,
+                        })
+                        
+                        console.log(response)
+                        dispatch(setFileData(response.data.fileData))
+                    }
                     
                     if (currentStepNumber >= allStepNumber) {
                         dispatch(setLocationCurrent('/micro/ended'))

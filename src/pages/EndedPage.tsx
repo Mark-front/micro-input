@@ -22,7 +22,7 @@ export const fetchRequest = async (props: IRequestProps) => {
         formData.append(key, ...data[key]);
     }
     // @ts-ignore
-    formData.append('userId', window.settingsForMicro.userId);
+    formData.append('studentId', window.settingsForMicro.userId);
     
     // @ts-ignore
     const res = await fetch(path, {
@@ -38,24 +38,21 @@ export const fetchRequest = async (props: IRequestProps) => {
 }
 
 export const EndedPage = memo(() => {
-    const answer = useSelector((state: RootState) => state.audio.value)
+    const answerFiles = useSelector((state: RootState) => state.audio.fileData)
     // @ts-ignore
     const sendFeedback = async (ev) => {
         ev.preventDefault()
-        let newObj = {}
-        const newData = answer.map((item, index) =>
-            // @ts-ignore
-            ({ 'microphone': `${item}` }))
-        newData.forEach((item) => {
-            newObj = { ...newObj, ...item }
-        })
-        await fetchRequest({
+        const res = await fetchRequest({
             action: 'WebForm/sendAnswer',
-            data: newObj,
+            data: {
+                'fileNames': JSON.stringify([ ...answerFiles ]),
+            },
             // @ts-ignore
             path: window.settingsForMicro.formAjaxPath,
         })
+        console.log(res)
     }
+    
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">
