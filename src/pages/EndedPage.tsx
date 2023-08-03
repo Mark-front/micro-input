@@ -45,6 +45,8 @@ export const EndedPage = memo(() => {
         const res = await fetchRequest({
             data: {
                 fileNames: JSON.stringify([ ...answerFiles ]),
+                // @ts-ignore
+                studentID: window.settingsForMicro.userId,
             },
             // @ts-ignore
             path: window.settingsForMicro.formAjaxPath,
