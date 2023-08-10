@@ -14,8 +14,8 @@ export const MicCheck = memo((props: IMicCheckProps) => {
         <div className="main-content-wrap">
             <div className="container vertikal">
                 <div className="main-content__text">
-                    <div className="audio-text">Давайте проверим работу вашего микрофона, прослушайте текст, затем
-                        повторите его.
+                    <div className="audio-text" dangerouslySetInnerHTML={// @ts-ignore
+                        { __html: window.settingsForMicro.testHtml }}>
                     </div>
                     <button
                         className="audio-button button-blue"

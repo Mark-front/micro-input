@@ -101,54 +101,6 @@ function App() {
         content: `url(${audioImg})`,
     }
     
-    // @ts-ignore
-    const fetchRequest = async (props) => {
-        const {
-            // @ts-ignore
-            data, path,
-        } = props;
-        
-        const formData = new FormData();
-        
-        for (const key in data) {
-            // @ts-ignore
-            formData.append(key, data[key]);
-        }
-        
-        // @ts-ignore
-        const res = await fetch(path, {
-            method: 'post',
-            headers: {
-                'Content-type': 'multipart/form-data',
-            },
-            body: formData,
-        })
-            .then((response) => response.json())
-            .catch((error) => {
-                console.log(error)
-            });
-        
-        return res
-    }
-    
-    // @ts-ignore
-    const sendFeedback = async (ev) => {
-        ev.preventDefault()
-        const res = await fetchRequest({
-            data: {
-                fileNames: JSON.stringify([
-                    'micro/upload/sadfqwe12341234123-1.mp3',
-                    'micro/upload/sadfqwe12341234123-2.mp3',
-                    'micro/upload/sadfqwe12341234123-3.mp3' ]),
-                // @ts-ignore
-                studentID: window.settingsForMicro.userId,
-            },
-            // @ts-ignore
-            path: window.settingsForMicro.formAjaxPath,
-        })
-        console.log(res)
-    }
-    
     
     return (
         <div className="main-container container">
@@ -168,14 +120,6 @@ function App() {
                     }
                 </div>
             </div>
-            
-            <form
-                encType='multipart/form-data'
-                method='post' name="audio_send"
-                onSubmit={sendFeedback}>
-                <input name="audio" type="hidden" value="ok"/>
-                <button type="submit" className="audio-button button-red">Отправить результат</button>
-            </form>
         </div>
     );
 }

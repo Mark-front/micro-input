@@ -14,6 +14,7 @@ export const AudioRecorderPage = memo((props: IAudioRecorderPageProps) => {
     } = props;
     
     const textQuestion = useSelector((state: RootState) => state.audio.currentStep?.question.text)
+    const loading = useSelector((state: RootState) => state.audio.isAudioSendLoading)
     
     
     const dispatch = useDispatch()
@@ -26,7 +27,8 @@ export const AudioRecorderPage = memo((props: IAudioRecorderPageProps) => {
                     <AudioRecorder
                         getAudio={(audioFile) => dispatch(saveAudio(audioFile))}
                     />
-                    <div className="audio-text">идёт запись ответа</div>
+                    {loading ? <div className="audio-text">Идет сохранение ответа в файл...</div> :
+                        <div className="audio-text">Идёт запись ответа</div>}
                 </div>
             </div>
         </div>

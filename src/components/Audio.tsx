@@ -29,28 +29,36 @@ export const Audio = memo((props: IAudioProps) => {
     
     const playAudio = useCallback(() => {
         if (audio.current) {
-            audio.current.volume = 0.25;
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
+                .test(navigator.userAgent)) {
+                audio.current.volume = 1;
+            } else {
+                audio.current.volume = 0.25;
+            }
             audio.current?.play();
         }
     }, []);
     
     const timeUpdate = useCallback(() => {
         if (!time) {
-            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0));
-            setDuration(Math.floor(audio.current?.duration ?? 0));
+            setCurrentTime(Math.floor(Number(audio.current?.currentTime) ?? 0));
+            setDuration(Math.floor(Number(audio.current?.duration) - 1 ?? 0));
             setProgressPresent(currentTime / duration * 100);
         } else {
-            setCurrentTime(Math.floor(audio.current?.currentTime ?? 0));
-            setDuration(Math.floor(time));
+            setCurrentTime(Math.floor(Number(audio.current?.currentTime) ?? 0));
+            setDuration(Math.floor(time) - 1);
             setProgressPresent(currentTime / duration * 100);
         }
     }, [ currentTime, duration, time ]);
     
     useEffect(() => {
+        console.log('readyState', audio.current?.readyState)
+        console.log('HAVE_CURRENT_DATA', audio.current?.HAVE_CURRENT_DATA)
+        
         audio.current?.addEventListener('loadeddata', () => {
             if (audio.current?.duration && audio.current?.duration !== Infinity) {
-                setDuration(Math.floor(audio.current?.duration));
-                setCurrentTime(Math.floor(audio.current?.currentTime));
+                setDuration(Math.floor(audio.current?.duration) - 1);
+                setCurrentTime(Math.floor(Number(audio.current?.currentTime)));
                 playAudio();
             }
         });
@@ -91,7 +99,6 @@ export const Audio = memo((props: IAudioProps) => {
                 onDurationChange={(ev) => {
                     if (ev.currentTarget.duration !== Infinity) {
                         console.log(ev.currentTarget.duration);
-                        // setDuration(Math.floor(ev.currentTarget.duration));
                     }
                 }}
             >

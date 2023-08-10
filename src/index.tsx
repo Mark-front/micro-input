@@ -12,7 +12,15 @@ const root = ReactDOM.createRoot(
 //     testPath: '/db.json',
 //     userId: 'sadfqwe12341234123',
 //     ajaxPath: '/local/ajax/',
-//     audioImg: '/images/audio-icon.svg',
+//     audioImg: 'static/media/audio-icon.svg',
+//     formAjaxPath: '/micro/form.php',
+//     uploadAjaxPath: '/micro/upload.php',
+//     audioPeep: 'media/peep.mp3',
+//     successHTML: '<div className="green"> Тест успешно пройден</div>',
+//     startHtml: '<div className=""> Мы начинаем</div>',
+//     testHtml: '<div className=""> Мы тестируем</div>',
+//     nextHtml: '<div className=""> Мы продолжаем</div>',
+//     sendHtml: '<div className=""> Мы отправляем</div>',
 // }
 root.render(
     <React.StrictMode>

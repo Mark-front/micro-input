@@ -14,6 +14,7 @@ export interface AudioState {
     };
     value: (string | undefined)[]
     isChecked: boolean
+    isAudioSendLoading: boolean
     currentStepNumber: number
     allStepNumber: number
     tasks?: Task[]
@@ -32,6 +33,7 @@ const initialState: AudioState = {
     isChecked: false,
     currentStepNumber: 0,
     allStepNumber: Infinity,
+    isAudioSendLoading: false,
     tasks: undefined,
     currentStep: undefined,
     isLoadedPage: false,
@@ -72,6 +74,9 @@ export const audioSlice = createSlice({
         setIsLoadedPage: (state, action) => {
             state.isLoadedPage = action.payload
         },
+        setIsAudioSendLoading: (state, action) => {
+            state.isLoadedPage = action.payload
+        },
         setLocationStart: (state, action) => {
             state.locationStart = action.payload
         },
@@ -94,6 +99,7 @@ export const { setCurrentStep } = audioSlice.actions
 export const { setCurrentStepNumber } = audioSlice.actions
 export const { setAllStepNumber } = audioSlice.actions
 export const { toggleCheck } = audioSlice.actions
+export const { setIsAudioSendLoading } = audioSlice.actions
 export const { deleteCheckAudio } = audioSlice.actions
 export const { setIsLoadedPage } = audioSlice.actions
 export const { setTestQuestion } = audioSlice.actions

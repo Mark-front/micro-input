@@ -25,7 +25,7 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     )
     
     const onEnded = useCallback(() => {
-        dispatch(setLocationCurrent('/micro/pause'))
+        dispatch(setLocationCurrent('/micro/peep'))
     }, [ dispatch ]);
     
     return (
@@ -39,7 +39,7 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
                         className="audio-button button-blue"
                         onClick={() => {
                             dispatch(toggleCheck())
-                            dispatch(setLocationCurrent('/micro/pause'))
+                            dispatch(setLocationCurrent('/micro/peep'))
                         }}
                     >
                         Ответить

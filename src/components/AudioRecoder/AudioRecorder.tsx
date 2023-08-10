@@ -2,7 +2,13 @@ import React, { memo, useEffect, useRef } from 'react';
 import { CountdownTimer } from '../CountdownTimer/CountdownTimer';
 import { Step } from '../../store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentStep, setCurrentStepNumber, setFileData, setLocationCurrent } from '../../store/slices/audioDataSlice';
+import {
+    getCurrentStep,
+    setCurrentStepNumber,
+    setFileData,
+    setIsAudioSendLoading,
+    setLocationCurrent,
+} from '../../store/slices/audioDataSlice';
 import { RootState } from '../../store/store';
 // @ts-ignore
 import lamejs from 'lamejs';
@@ -40,7 +46,6 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
     const currentStepNumber = useSelector((state: RootState) => state.audio.currentStepNumber);
     const allStepNumber = useSelector((state: RootState) => state.audio.allStepNumber);
     
-    
     useEffect(() => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
             mediaRecorder.current = new MediaRecorder(stream as MediaStream);
@@ -72,6 +77,8 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                         formData.append('questionNumber', currentStepNumber + 1)
                         // @ts-ignore
                         formData.append('studentId', window.settingsForMicro.userId)
+                        
+                        dispatch(setIsAudioSendLoading(true))
                         // @ts-ignore
                         const response = await fetch(window.settingsForMicro.uploadAjaxPath, {
                             method: 'post',
@@ -80,9 +87,13 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                             // },
                             body: formData,
                         })
-                            .then((response) => response.json())
+                            .then((response) => {
+                                return response.json()
+                            })
                             .catch((error) => {
                                 console.log(error)
+                            }).finally(() => {
+                                dispatch(setIsAudioSendLoading(false))
                             });
                         dispatch(setFileData(response.path))
                     }

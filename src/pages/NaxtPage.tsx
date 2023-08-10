@@ -6,10 +6,9 @@ export const NextPage = memo(() => {
     const dispatch = useDispatch();
     return (
         <div className="main-content__text">
-            <div className="audio-text text-next">У вас все отлично получается, переходите к следующему вопросу,
-                если стало сложно завершите тест.
+            <div className="audio-text text-next" dangerouslySetInnerHTML={// @ts-ignore
+                { __html: window.settingsForMicro.nextHtml }}>
             </div>
-            
             <button className="audio-button button-red button-next" onClick={() => {
                 dispatch(setLocationCurrent('/micro/pause-before'))
             }}>Следующий вопрос

@@ -62,7 +62,8 @@ export const TaskPage = memo((props: IMainPageProps) => {
                         {error
                             ? 'Микрофон не найден'
                             // eslint-disable-next-line max-len
-                            : 'В этом тесте вам будет необходимо отвечать на вопросы. Для прохождения теста нам нужен доступ к вашему микрофону.'}
+                            // @ts-ignore
+                            : <div dangerouslySetInnerHTML={{ __html: window.settingsForMicro.startHtml }}></div>}
                     </div>
                     <button
                         className="audio-button button-blue"

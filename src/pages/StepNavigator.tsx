@@ -11,6 +11,7 @@ import { EndedPage } from './EndedPage';
 import { TestPage } from './StartTest';
 import { PauseBefore } from './PausePage/PauseBefore';
 import { NextPage } from './NaxtPage';
+import { PeepPage } from './PeepPage';
 
 export const StepNavigator = memo(() => {
     const locCur = useSelector((state: RootState) => state.audio.locationCurrent);
@@ -26,6 +27,9 @@ export const StepNavigator = memo(() => {
         }
         case '/micro/mic-check': {
             return <MicCheck/>
+        }
+        case '/micro/peep': {
+            return <PeepPage/>
         }
         case '/micro/recorder': {
             return <AudioRecorderPage/>

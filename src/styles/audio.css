@@ -237,18 +237,24 @@ height: 250px;
 }
 
 .countdown-red {
+    position: relative;
+    width: fit-content;
     color: #C12129;
-    margin-top: 25px
+    padding-left: 20px;
+    margin: 25px auto 0;
 }
 
 
 .countdown-red::before {
-    content: url(../images/countdown-icon.svg);
+    content: '';
+    display: block;
+    border-radius: 100px;
+    background-color: #C12129;
     width: 14px;
     height: 14px;
     position: relative;
-    left: -10px;
-    top: -8px;
+    left: -20px;
+    top: 40px;
 }
 
 .play-progress {
@@ -323,6 +329,8 @@ height: 250px;
     .audio-text {
         width: 600px;
     }
+
+
 }
 
 @media only screen and (max-width: 744px) {
@@ -346,6 +354,21 @@ height: 250px;
         max-width: 400px;
         width: auto !important;
         padding: 0 5% 0 5%;
+    }
+
+    .button-red {
+        display: block;
+        margin: 0 auto;
+        margin-top: 30px;
+        border: 2px solid #C12129;
+        border-radius: 60px;
+        font-size: 20px !important;
+        color: #000 !important;
+        padding: 10px 25px 10px 25px
+    }
+
+    .button-next:after {
+        display: none !important;
     }
 
     .audio-button {

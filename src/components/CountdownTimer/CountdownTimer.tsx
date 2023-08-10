@@ -9,6 +9,7 @@ interface CountdownTimerProps {
     isPlay: boolean;
     onEnd?: () => void
     onStart?: () => void
+    isLoading?: boolean
 }
 
 /**
@@ -21,29 +22,30 @@ export const CountdownTimer = memo((props: CountdownTimerProps) => {
         isPlay = false,
         onEnd,
         onStart,
+        isLoading,
     } = props;
-
+    
     const [ play, setPlay ] = useState(isPlay);
     const [ currentTime, setCurrentTime ] = useState(time * 1000); // значение в милисекундах
-
+    
     const handlePlay = useCallback(() => {
         onStart?.()
         setPlay(true)
     }, [ onStart ]);
-
+    
     const handleStop = useCallback(() => {
         setPlay(false)
     }, []);
-
+    
     const handleEnd = useCallback(() => {
         setPlay(false)
         onEnd?.()
     }, [ onEnd ]);
-
+    
     const handleStep = useCallback(() => {
         setCurrentTime(currentTime - ONE_SECOND_IN_MILLISECONDS)
     }, [ currentTime ]);
-
+    
     return (
         <div className={className}>
             <Timer

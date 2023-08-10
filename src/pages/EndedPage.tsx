@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 
@@ -8,56 +8,38 @@ interface IRequestProps {
     path: string
 }
 
-export const fetchRequest = async (props: IRequestProps) => {
-    const {
-        data, path,
-    } = props;
-    
-    const formData = new FormData();
-    
-    for (const key in data) {
-        // @ts-ignore
-        formData.append(key, data[key]);
-    }
-    
-    // @ts-ignore
-    const res = await fetch(path, {
-        method: 'post',
-        headers: {
-            'Content-type': 'multipart/form-data',
-        },
-        body: formData,
-    })
-        .then((response) => response.json())
-        .catch((error) => {
-            console.log(error)
-        });
-    
-    return res
-}
-
 export const EndedPage = memo(() => {
     const answerFiles = useSelector((state: RootState) => state.audio.fileData)
+    
+    const [ success, setSuccess ] = useState(false);
     // @ts-ignore
     const sendFeedback = async (ev) => {
         ev.preventDefault()
-        console.log([ ...answerFiles ])
-        const res = await fetchRequest({
-            data: {
-                fileNames: JSON.stringify([ ...answerFiles ]),
-                // @ts-ignore
-                studentID: window.settingsForMicro.userId,
-            },
+        // @ts-ignore
+        const response = await fetch(window.settingsForMicro.formAjaxPath, {
+            method: 'POST',
             // @ts-ignore
-            path: window.settingsForMicro.formAjaxPath,
+            body: JSON.stringify({ fileNames: [ ...answerFiles ], studentID: window.settingsForMicro.userId }),
+        }).then((response) => {
+            response.status === 200 && setSuccess(true)
         })
-        console.log(res)
+        console.log(response)
     }
-    
+    if (success) {
+        return (
+            <div className="main-content-wrap">
+                <div className="container vertikal" dangerouslySetInnerHTML={// @ts-ignore
+                    { __html: window.settingsForMicro.successHTML }}>
+                </div>
+            </div>
+        )
+    }
     return (
         <div className="main-content-wrap">
             <div className="container vertikal">
-                <div className="audio-text">Отправить результат</div>
+                <div className="audio-text" dangerouslySetInnerHTML={// @ts-ignore
+                    { __html: window.settingsForMicro.sendHtml }}>
+                </div>
                 <form
                     encType='multipart/form-data'
                     method='post' name="audio_send"
