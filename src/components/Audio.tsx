@@ -24,20 +24,27 @@ export const Audio = memo((props: IAudioProps) => {
     const audio = useRef<HTMLAudioElement>(null);
     
     const [ duration, setDuration ] = useState(0);
+    const [ isReady, setIsReady ] = useState(false);
     const [ currentTime, setCurrentTime ] = useState(0);
     const [ progressPresent, setProgressPresent ] = useState(0);
     
     const playAudio = useCallback(() => {
-        if (audio.current) {
+        if (isReady) {
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i
                 .test(navigator.userAgent)) {
+                // @ts-ignore
                 audio.current.volume = 1;
             } else {
+                // @ts-ignore
                 audio.current.volume = 0.25;
             }
             audio.current?.play();
+        } else {
+            audio.current?.load();
+            setIsReady(true);
         }
-    }, []);
+        
+    }, [ isReady ]);
     
     const timeUpdate = useCallback(() => {
         if (!time) {
@@ -52,26 +59,23 @@ export const Audio = memo((props: IAudioProps) => {
     }, [ currentTime, duration, time ]);
     
     useEffect(() => {
-        console.log('readyState', audio.current?.readyState)
-        console.log('HAVE_CURRENT_DATA', audio.current?.HAVE_CURRENT_DATA)
-        
         audio.current?.addEventListener('loadeddata', () => {
             if (audio.current?.duration && audio.current?.duration !== Infinity) {
                 setDuration(Math.floor(audio.current?.duration) - 1);
                 setCurrentTime(Math.floor(Number(audio.current?.currentTime)));
-                playAudio();
+                
             }
         });
         audio.current?.addEventListener('play', () => {
             setIsPlay(true);
         });
-    }, [ playAudio ]);
+    }, [ isPlay, isReady, playAudio ]);
     
     return (
         <>
             <div className="play-progress">
                 {/* Кнопка для запуска аудио нужна из-за https://developer.chrome.com/blog/autoplay/ */}
-                {!isPlay && <button onClick={playAudio} className='play-btn'>
+                {<button onClick={playAudio} className='play-btn'>
                     <svg
                         version="1.1"
                         xmlns="http://www.w3.org/2000/svg"
