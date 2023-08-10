@@ -60,7 +60,9 @@ export const TaskPage = memo((props: IMainPageProps) => {
                 <div className="main-content__text">
                     <div className="audio-text">
                         {error
-                            ? 'Микрофон не найден'
+                            ?
+                            // @ts-ignore
+                            <div dangerouslySetInnerHTML={{ __html: window.settingsForMicro.errorMicro }}></div>
                             // eslint-disable-next-line max-len
                             // @ts-ignore
                             : <div dangerouslySetInnerHTML={{ __html: window.settingsForMicro.startHtml }}></div>}
