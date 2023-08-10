@@ -39,6 +39,7 @@ export const Audio = memo((props: IAudioProps) => {
                 audio.current.volume = 0.25;
             }
             audio.current?.play();
+            console.log('play')
         } else {
             audio.current?.load();
             setIsReady(true);
@@ -95,6 +96,7 @@ export const Audio = memo((props: IAudioProps) => {
                 ref={audio}
                 preload={'auto'}
                 onPlay={handlePlay}
+                onCanPlay={playAudio}
                 onTimeUpdate={timeUpdate}
                 onEnded={timeUpdate}
                 onLoadedDataCapture={timeUpdate}
