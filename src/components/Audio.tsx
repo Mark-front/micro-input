@@ -18,7 +18,6 @@ export const Audio = memo((props: IAudioProps) => {
     
     const [ isPlay, setIsPlay ] = useState(false);
     const handlePlay = useCallback((e: SyntheticEvent<HTMLAudioElement>) => {
-        console.log(e);
     }, []);
     
     const audio = useRef<HTMLAudioElement>(null);
@@ -39,7 +38,6 @@ export const Audio = memo((props: IAudioProps) => {
                 audio.current.volume = 0.25;
             }
             audio.current?.play();
-            console.log('play')
         } else {
             audio.current?.load();
             setIsReady(true);
@@ -102,11 +100,6 @@ export const Audio = memo((props: IAudioProps) => {
                 onLoadedDataCapture={timeUpdate}
                 onLoadedMetadata={timeUpdate}
                 onEndedCapture={onEnded}
-                onDurationChange={(ev) => {
-                    if (ev.currentTarget.duration !== Infinity) {
-                        console.log(ev.currentTarget.duration);
-                    }
-                }}
             >
                 <source
                     src={srcAudio} // test audio http://d2cstorage-a.akamaihd.net/wbr/gotnext/8578.mp3

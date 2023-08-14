@@ -91,7 +91,7 @@ export const AudioRecorder = memo((props: AudioRecorderProps) => {
                                 return response.json()
                             })
                             .catch((error) => {
-                                console.log(error)
+                                console.warn(error)
                             }).finally(() => {
                                 dispatch(setIsAudioSendLoading(false))
                             });

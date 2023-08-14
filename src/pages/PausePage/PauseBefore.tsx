@@ -16,7 +16,6 @@ export const PauseBefore = memo((props: ICountDownPageProps) => {
     const currentStep = useSelector(getCurrentStep)
     const dispatch = useDispatch()
     
-    console.log(currentStep)
     
     return (
         <div className="main-content-wrap">

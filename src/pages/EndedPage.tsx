@@ -23,7 +23,6 @@ export const EndedPage = memo(() => {
         }).then((response) => {
             response.status === 200 && setSuccess(true)
         })
-        console.log(response)
     }
     if (success) {
         return (
