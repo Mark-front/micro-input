@@ -16,8 +16,8 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     
     const dispatch = useDispatch()
     
-    const text = useSelector((state: RootState) => state.audio.currentStep?.question.text_task)
     const isChecked = useSelector((state: RootState) => state.audio.isChecked)
+    const text = useSelector((state: RootState) => state.audio.currentStep?.question.text_task)
     const audio = useSelector((state: RootState) =>
         isChecked ?
             state.audio.currentStep?.question.audio :
@@ -30,7 +30,10 @@ export const QuestionPage = memo((props: IQuestionPageProps) => {
     
     return (
         <div className="main-content-wrap">
-            <div className="audio-text">{text ?? 'Текст задания:'}</div>
+            <div className="audio-text">{
+                // @ts-ignore
+                isChecked ? (text ?? 'Текст задания:') : window.settingsForMicro.testQuestionText
+            }</div>
             {
                 (audio) ?
                     <Audio srcAudio={audio} onEnded={onEnded}/>
